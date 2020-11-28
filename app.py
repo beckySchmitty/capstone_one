@@ -80,6 +80,26 @@ def handle_signup():
 
     return render_template('/user/signup.html', form=form)
 
+@app.route('/login', methods=["GET", "POST"])
+def user_login():
+    form = userLoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        user = User.authenticate(username, password)
+
+        if user:
+            user_login(user)
+            flash("welcome back!", "success")
+            return redirect('/home')
+        else:
+            flash("Invalid password, try again", "danger")
+
+
+    return render_template('/user/login.html', form=form)
+
 
 @app.route('/home')
 def show_home_dashboard():
