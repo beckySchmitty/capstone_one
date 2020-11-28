@@ -5,14 +5,34 @@
 <div class="container">
     <div class="row">
       <div class="col-sm-8">
-          <h1>Home!</h1>
-          <p>Hello,{{user.username}} </p>
+          <h1>HomeState ({{data.state}})</h1>
+          <p>Hello, {{user.username}} </p>
       </div>
       <div class="col-sm-4"></div>
     </div>
     <div class="row">
-        <div class="col-sm">X</div>
-        <div class="col-sm">Y</div>
+        <div class="col-sm">
+          <div class="card mb-3" >
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1489&q=80" class="card-img" alt="covid virus">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Current Numbers</h5>
+                  <p class="card-text">
+                    <p><strong>New Cases:</strong> {{data.positiveIncrease}}</p>
+                    <p><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</p>
+                    <p><strong>Total Deaths:</strong> {{data.death}}</p>
+                  </p>
+                  <p class="card-text"><small class="text-muted">Last updated {{data.dateChecked}} </small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+   
+        </div>
+        <div class="col-sm"></div>
     </div>
   </div>
 

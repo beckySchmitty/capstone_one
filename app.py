@@ -1,9 +1,11 @@
-from flask import Flask, request, render_template, redirect, flash, jsonify, session
+from flask import Flask, request, render_template, redirect, flash, jsonify, session, g
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, Address, State, get_favs
 from forms import userLoginForm, userSignUpForm
+
+from route_helpers import get_state_data
 
 
 
@@ -21,6 +23,33 @@ connect_db(app)
 
 # db.create_all()
 
+CURR_USER_KEY = "current_user"
+
+
+@app.before_request
+def add_user_to_g():
+    """If logged in, add curr user to Flask global."""
+
+    if CURR_USER_KEY in session:
+        g.user = User.query.get(session[CURR_USER_KEY])
+
+    else:
+        g.user = None
+
+
+def user_login(user):
+    """Log in user."""
+
+    session[CURR_USER_KEY] = user.id
+
+
+# def do_logout():
+#     """Logout user."""
+
+#     if CURR_USER_KEY in session:
+#         del session[CURR_USER_KEY]
+
+
 @app.route('/')
 def welcome():
     """shows homepage"""
@@ -28,6 +57,7 @@ def welcome():
 
 @app.route('/signup', methods=["GET", "POST"])
 def handle_signup():
+
     form = userSignUpForm()
 
     if form.validate_on_submit():
@@ -44,7 +74,7 @@ def handle_signup():
             flash('Username already taken', 'danger')
             return render_template('/user/signup.html', form=form)
         
-        session['CURRENT_USER'] = new_user.username
+        user_login(new_user)
 
         return redirect('/home')
 
@@ -54,10 +84,17 @@ def handle_signup():
 @app.route('/home')
 def show_home_dashboard():
     """shows dashboard with homestate information"""
-    username = session['CURRENT_USER']
-    user = User.query.filter(User.username == username).first()
+
+    if not g.user:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
 
-    return render_template('/user/home.html', user=user)
+    user = User.query.get_or_404(g.user.id)
+
+    data = get_state_data(user.homestate)
+
+
+    return render_template('/user/home.html', user=user, data=data)
 
 
