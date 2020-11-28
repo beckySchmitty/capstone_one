@@ -1,7 +1,7 @@
 """Seed file to make sample data for db."""
 
-from models_two import User, Address, State, db
-from app_two import app
+from models import User, Address, State, db
+from app import app
 
 # Create all tables
 db.drop_all()
@@ -26,13 +26,12 @@ db.session.commit()
 
 
 # add Addresses
-a1 = Address(user_id=1, state_name="oh", favorite=True)
-a2 = Address(user_id=2, state_name="ny", favorite=False)
-a3 = Address(user_id=1, state_name="ny", favorite=True)
-a4 = Address(user_id=3, state_name="ca", favorite=False)
-a4 = Address(user_id=3, state_name="oh", favorite=False)
-a5 = Address(user_id=1, state_name="ca", favorite=True)
-a6 = Address(user_id=1, state_name="nc", favorite=False)
-db.session.add_all([a1, a2, a3, a4, a5, a6])
+a1 = Address(user_id=1, address_line1="fake", state_name="oh", zip_code="43015", favorite=False)
+a2 = Address(user_id=1, address_line1="fake", state_name="ca", zip_code="99999", favorite=True)
+a3 = Address(user_id=1, address_line1="fake", state_name="ny", zip_code="88888", favorite=True)
+
+
+
+db.session.add_all([a1, a2, a3])
 db.session.commit()
 

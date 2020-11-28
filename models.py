@@ -2,12 +2,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
-bcrypt = Bcrypt()
-
 
 def connect_db(app):
     db.app = app
     db.init_app(app)
+
+bcrypt = Bcrypt()
+
 
 
 class State(db.Model):
@@ -25,7 +26,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     def __repr__(self):
-        return f"<User {self.name} {self.email} >"
+        return f"<User {self.username} {self.email} >"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, nullable=False, unique=True)
@@ -37,29 +38,28 @@ class User(db.Model):
     addresses = db.relationship('Address', backref='user')
 
     @classmethod
-    def signUp(cls, username, email, password, homestate)
-    """Signs up user by hashing password & adding to database"""
+    def signUp(cls, username, email, password, homestate):
+        """Signs up user by hashing password & adding to database"""
 
-    hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-    new_user = User(username=username, email=email, password=hashed_pwd, homestate=homestate)
-    db.session.add(new_user)
-    return new_user
+        new_user = User(username=username, email=email, password=hashed_pwd, homestate=homestate)
+        db.session.add(new_user)
+        return new_user
+
 
     @classmethod
-    def authenticate(cls, username, password)
-    """Find 'user' and return if password is valid"""
+    def authenticate(cls, username, password):
+        """Find 'user' and return if password is valid"""
 
-    user = cls.query.filter_by(username=username).first()
+        user = cls.query.filter_by(username=username).first()
 
-    if user:
-        user_auth = bcrypt.check_password_hash(user.password, password)
-        if user_auth:
-            return user
-    
-    return False
-
-
+        if user:
+            user_auth = bcrypt.check_password_hash(user.password, password)
+            if user_auth:
+                return user
+        
+        return False
 
 
 class Address(db.Model):
@@ -73,7 +73,7 @@ class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     address_line1 = db.Column(db.Text, nullable=False)
-    address_line2 = db.Column(db.Text, nullable=False)
+    address_line2 = db.Column(db.Text)
     state_name = db.Column(db.Text, db.ForeignKey('states.name'))
     zip_code = db.Column(db.Integer, nullable=False)
     favorite = db.Column(db.Boolean, nullable=False, default=False)
@@ -84,6 +84,6 @@ def get_favs(user_id):
 
     for address in user.addresses:
         if address.favorite is True:
-            return [address.state_name for address in user.addresses if address.state_name != user.homestate]
+            return [address.state_name for address in user.addresses]
         else:
             return "No Favorites"
