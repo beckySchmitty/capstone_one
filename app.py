@@ -12,7 +12,7 @@ from route_helpers import get_state_data
 app = Flask(__name__)
 
 # connect to specific database in postgresql
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft2'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = "key9876"

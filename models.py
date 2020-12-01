@@ -32,7 +32,7 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     email = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    homestate = db.Column(db.Text, db.ForeignKey('states.name'))
+    homestate = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
 
     # NOT WORKING
     # Through relationship
@@ -42,8 +42,8 @@ class User(db.Model):
 
     # NOT WORKING
     # attempt at Direct
-    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
-    addresses = db.relationship("Address", backref="users")
+    # address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
+    # addresses = db.relationship("Address", backref="users")
 
 
     @classmethod
@@ -82,7 +82,7 @@ class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     address_line1 = db.Column(db.Text, nullable=False)
     address_line2 = db.Column(db.Text)
-    state_name = db.Column(db.Text, db.ForeignKey('states.name'))
+    state_name = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
     zip_code = db.Column(db.Integer, nullable=False)
     favorite = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -91,6 +91,6 @@ class User_Addresses(db.Model):
     """link user and their  addresses"""
     __tablename__ = "user_addresses"
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'), primary_key=True)
+    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id', ondelete='cascade'), primary_key=True)
     note = db.Column(db.Text)
