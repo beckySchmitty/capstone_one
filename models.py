@@ -34,8 +34,17 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     homestate = db.Column(db.Text, db.ForeignKey('states.name'))
 
-    # Direct relationship
-    addresses = db.relationship('Address', backref='user')
+    # NOT WORKING
+    # Through relationship
+    addresses = db.relationship('Address',
+                                secondary='user_addresses',
+                                backref='users')
+
+    # NOT WORKING
+    # attempt at Direct
+    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
+    addresses = db.relationship("Address", backref="users")
+
 
     @classmethod
     def signUp(cls, username, email, password, homestate):
@@ -65,13 +74,12 @@ class User(db.Model):
 class Address(db.Model):
     """Address model"""
 
-    __tablename__ = "Addresses"
+    __tablename__ = "addresses"
 
     def __repr__(self):
-        return f"<Address {self.user_id} {self.state_name} {self.favorite} >"
+        return f"<Address {self.user_id} {self.state_name} {self.favorite}>"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     address_line1 = db.Column(db.Text, nullable=False)
     address_line2 = db.Column(db.Text)
     state_name = db.Column(db.Text, db.ForeignKey('states.name'))
@@ -79,11 +87,10 @@ class Address(db.Model):
     favorite = db.Column(db.Boolean, nullable=False, default=False)
 
 
-def get_favs(user_id):
-    user = User.query.get(user_id)
+class User_Addresses(db.Model):
+    """link user and their  addresses"""
+    __tablename__ = "user_addresses"
 
-    for address in user.addresses:
-        if address.favorite is True:
-            return [address.state_name for address in user.addresses]
-        else:
-            return "No Favorites"
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'), primary_key=True)
+    note = db.Column(db.Text)

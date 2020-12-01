@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, jsonify, ses
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, User, Address, State, get_favs
+from models import db, connect_db, State, User, Address, User_Addresses 
 from forms import userLoginForm, userSignUpForm
 
 from route_helpers import get_state_data
@@ -46,7 +46,7 @@ def logout_user():
 
 @app.route('/')
 def welcome():
-    """shows homepage"""
+    """shows homepage for all anon users"""
     return render_template('welcome.html')
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -70,7 +70,7 @@ def handle_signup():
         
         user_login(new_user)
 
-        return redirect('/home/dashboard')
+        return redirect('/dashboard')
 
     return render_template('/user/signup.html', form=form)
 
@@ -87,7 +87,7 @@ def user_login_route():
         if user:
             user_login(user)
             flash("welcome back!", "success")
-            return redirect('/home/dashboard')
+            return redirect('/dashboard')
         else:
             flash("Invalid password, try again", "danger")
 
@@ -95,7 +95,7 @@ def user_login_route():
     return render_template('/user/login.html', form=form)
 
 
-@app.route('/home/dashboard')
+@app.route('/dashboard')
 def show_home_dashboard():
     """shows dashboard with homestate information"""
 
@@ -110,7 +110,7 @@ def show_home_dashboard():
     data = get_state_data(curr_user.homestate)
 
 
-    return render_template('/user/home_dash.html', user=curr_user, data=data)
+    return render_template('/user/dashboard.html', user=curr_user, data=data)
 
 @app.route('/logout')
 def handle_user_logout():
