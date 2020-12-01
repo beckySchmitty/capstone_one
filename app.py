@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, jsonify, session, g
+from flask import Flask, request, render_template, redirect, flash, jsonify, session
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
@@ -26,28 +26,22 @@ connect_db(app)
 CURR_USER_KEY = "current_user"
 
 
-@app.before_request
-def add_user_to_g():
-    """If logged in, add curr user to Flask global."""
+# Funcs to find and authenticate user via flask session
+def find_user():
 
     if CURR_USER_KEY in session:
-        g.user = User.query.get(session[CURR_USER_KEY])
+        found_user = User.query.get(session[CURR_USER_KEY])
+        return found_user
 
     else:
-        g.user = None
-
+        return None
 
 def user_login(user):
-    """Log in user."""
-
     session[CURR_USER_KEY] = user.id
 
+def logout_user():
+    session[CURR_USER_KEY] = None
 
-# def do_logout():
-#     """Logout user."""
-
-#     if CURR_USER_KEY in session:
-#         del session[CURR_USER_KEY]
 
 
 @app.route('/')
@@ -76,12 +70,12 @@ def handle_signup():
         
         user_login(new_user)
 
-        return redirect('/home')
+        return redirect('/home/dashboard')
 
     return render_template('/user/signup.html', form=form)
 
 @app.route('/login', methods=["GET", "POST"])
-def user_login():
+def user_login_route():
     form = userLoginForm()
 
     if form.validate_on_submit():
@@ -93,7 +87,7 @@ def user_login():
         if user:
             user_login(user)
             flash("welcome back!", "success")
-            return redirect('/home')
+            return redirect('/home/dashboard')
         else:
             flash("Invalid password, try again", "danger")
 
@@ -101,20 +95,27 @@ def user_login():
     return render_template('/user/login.html', form=form)
 
 
-@app.route('/home')
+@app.route('/home/dashboard')
 def show_home_dashboard():
     """shows dashboard with homestate information"""
 
-    if not g.user:
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")
 
 
-    user = User.query.get_or_404(g.user.id)
-
-    data = get_state_data(user.homestate)
+    data = get_state_data(curr_user.homestate)
 
 
-    return render_template('/user/home.html', user=user, data=data)
+    return render_template('/user/home_dash.html', user=curr_user, data=data)
 
-
+@app.route('/logout')
+def handle_user_logout():
+    if (find_user()):
+        flash("Logged out", "success")
+        logout_user()
+    return redirect('/')
+  
