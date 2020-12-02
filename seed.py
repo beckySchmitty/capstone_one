@@ -25,9 +25,9 @@ db.session.commit()
 
 
 # add Addresses
-a1 = Address(address_line1="fake", state_name="oh", zip_code="43015", favorite=False)
-a2 = Address(address_line1="fake", state_name="ca", zip_code="99999", favorite=True)
-a3 = Address(address_line1="fake", state_name="ny", zip_code="88888", favorite=True)
+a1 = Address(user_id = 1, address_line1="fake", state_name="oh", zip_code="43015", favorite=False)
+a2 = Address(user_id = 1, address_line1="fake", state_name="ca", zip_code="99999", favorite=True)
+a3 = Address(user_id = 1, address_line1="fake", state_name="ny", zip_code="88888", favorite=True)
 db.session.add_all([a1, a2, a3])
 db.session.commit()
 

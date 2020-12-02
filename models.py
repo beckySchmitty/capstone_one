@@ -80,6 +80,7 @@ class Address(db.Model):
         return f"<Address {self.user_id} {self.state_name} {self.favorite}>"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     address_line1 = db.Column(db.Text, nullable=False)
     address_line2 = db.Column(db.Text)
     state_name = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
@@ -94,3 +95,13 @@ class User_Addresses(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'), primary_key=True)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id', ondelete='cascade'), primary_key=True)
     note = db.Column(db.Text)
+
+
+def get_favs(user_id):
+    user = User.query.get(user_id)
+
+    for address in user.addresses:
+        if address.favorite is True:
+            return [address for address in user.addresses if address.state_name != user.homestate]
+        else:
+            return None
