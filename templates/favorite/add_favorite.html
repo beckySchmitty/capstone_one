@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Add Fav {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+          <h1>Welcome back!</h1>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <form method="POST" id="add_favorite">
+                {{ form.hidden_tag() }}
+          
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                  {% for error in field.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                  {% endfor %}
+                  {{field.label}}
+                  {{ field(class="form-control") }}
+                {% endfor %}
+          
+                <button class="btn btn-success btn-md btn-block">Add</button>
+              </form>        </div>
+        <div class="col-sm-4"></div>
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -2,10 +2,10 @@ from flask import Flask, request, render_template, redirect, flash, jsonify, ses
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, State, User, Address, User_Addresses 
-from forms import userLoginForm, userSignUpForm
+from models import db, connect_db, State, User, Address, User_Addresses, get_favs 
+from forms import userLoginForm, userSignUpForm, addFavoriteForm
 
-from route_helpers import get_state_data
+from route_helpers import get_state_data, get_multi_state_data
 
 
 
@@ -48,6 +48,8 @@ def logout_user():
 def welcome():
     """shows homepage for all anon users"""
     return render_template('welcome.html')
+
+# ******************************************************************** USER ROUTES
 
 @app.route('/signup', methods=["GET", "POST"])
 def handle_signup():
@@ -119,3 +121,73 @@ def handle_user_logout():
         logout_user()
     return redirect('/')
   
+
+# ******************************************************************** FAVORITE ROUTES
+@app.route('/favorite/add', methods=["GET", "POST"])
+def handle_add_favorite_form():
+
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    form = addFavoriteForm()
+
+    if form.validate_on_submit():
+
+        try: 
+            new_fav = Address(
+                user_id = curr_user.id,
+                address_line1 = form.address_line1.data,
+                address_line2 = form.address_line2.data or None,
+                state_name = form.state_name.data,
+                zip_code = form.zip_code.data,
+                favorite = form.favorite.data,
+            )
+
+            db.session.add(new_fav)
+            db.session.commit()
+
+            # get address id and add information to User_Addresses table
+            new_fav = Address.query.filter(Address.address_line1==form.address_line1.data).first()
+
+            new_ua = User_Addresses(user_id=curr_user.id, address_id=new_fav.id)
+            db.session.add(new_ua)
+            db.session.commit()
+
+        except IntegrityError:
+            flash('Error, try again', 'danger')
+            return render_template('/favorite/add_favorite.html', form=form)
+        
+        flash('Successfully added new favorite', 'success')
+        return redirect('/favorite/dashboard')
+
+
+    return render_template('/favorite/add_favorite.html', form=form)
+
+
+@app.route('/favorite/dashboard')
+def show_favorites_dashboard():
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    favorites = [address for address in curr_user.addresses]
+
+    favorites_for_api = [address.state_name for address in curr_user.addresses]
+    favorites_state_data = get_multi_state_data(favorites_for_api)
+
+
+    # testing
+    # favorites = curr_user.addresses
+    # favorites_state_data = get_multi_state_data(user_favorites)
+
+
+    return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
+
+
