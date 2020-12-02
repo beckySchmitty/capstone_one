@@ -13,10 +13,10 @@ def get_state_data(state):
 
 def get_multi_state_data(user_favorites):
 
-    fav_states_data = []
+    multi_states_data = []
     for fav in user_favorites:
         resp = requests.get(f"{BASE_URL}/states/{fav}/current.json")
         state_data = resp.json()
-        fav_states_data.append(state_data)
+        multi_states_data.append(state_data)
 
-    return fav_states_data
+    return multi_states_data

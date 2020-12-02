@@ -183,11 +183,6 @@ def show_favorites_dashboard():
     favorites_state_data = get_multi_state_data(favorites_for_api)
 
 
-    # testing
-    # favorites = curr_user.addresses
-    # favorites_state_data = get_multi_state_data(user_favorites)
-
-
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
 
 
