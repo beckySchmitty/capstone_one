@@ -8,38 +8,40 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet"
         href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
-          <!-- <link rel="stylesheet" href="/static/app.css"> -->
+          <link rel="stylesheet" href="/static/app.css">
 
 </head>
+
 <body>
 
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-  <a class="navbar-brand" href="/">myCovidNumber</a>
-  <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
-  </ul>
-  <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="/favorite/dashboard">Favorites</a></li>
-  </ul>
-  <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="/favorite/add">Add Fav</a></li>
-  </ul>
-  <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-  </ul>
-  </div>
-</nav>
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">myCovidStats</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="/dashboard">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/favorite/dashboard">Favorites</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/favorite/add">Add Fav</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
 
-<div class="container" style="margin-top: 2em">
-  {% for category, msg in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{category}}">{{ msg }}</div>
-  {% endfor %}
-</div>
+          </ul>
+
+        </div>
+      </nav>
+
 
 <div class="container mt-5">
   {% block content %}
-  <!-- put the content here -->
+  <!-- put  content here -->
   {% endblock %}
 </div>
 

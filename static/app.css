@@ -1,0 +1,33 @@
+.btn-first {
+    color: white;
+    background-color: #f79862;
+}
+
+.btn-first:hover {
+    color: #f79862;
+    background-color: white;
+    border:0.1em solid #f79862;
+}
+
+.btn-second {
+    color: white;
+    background-color: #fda50f;
+}
+
+.btn-second:hover {
+    color: #fda50f;
+    background-color: white;
+    border:0.1em solid #fda50f;
+}
+
+.btn-third {
+    color: white;
+    background-color: #ef7215;
+}
+
+.btn-third:hover {
+    color: #ef7215;
+    background-color: white;
+    border:0.1em solid #ef7215;
+}
+
