@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, flash, jsonify, session
+from flask_mail import Mail, Message
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
@@ -6,10 +7,25 @@ from models import db, connect_db, State, User, Address, User_Addresses, get_fav
 from forms import userLoginForm, userSignUpForm, addFavoriteForm
 
 from route_helpers import get_state_data, get_multi_state_data
+from extra import my_password
 
 
 
 app = Flask(__name__)
+
+
+
+app.config.update(dict(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = 'becky.schmitthenner@gmail.com',
+    MAIL_PASSWORD = my_password,
+))
+mail = Mail(app)
+
 
 # connect to specific database in postgresql
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft2'
@@ -184,6 +200,26 @@ def show_favorites_dashboard():
 
 
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
+
+
+
+
+
+# ******************************************************************** Testing Flask Mail
+
+@app.route("/email")
+def send_email():
+
+    msg = Message("Hello",
+                  sender="becky.schmitthenner@gmail.com",
+                  recipients=["becky.schmitthenner@gmail.com"])
+
+    msg.body = "testing"
+    msg.html = "<b>testing</b>"
+
+    mail.send(msg)
+
+    return "<h1>MESSAGE SENT!!!</h1>"
 
 
 
