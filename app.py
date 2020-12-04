@@ -186,3 +186,15 @@ def show_favorites_dashboard():
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
 
 
+
+
+
+@app.after_request
+def add_header(req):
+    """Add non-caching headers on every request."""
+
+    req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    req.headers["Pragma"] = "no-cache"
+    req.headers["Expires"] = "0"
+    req.headers['Cache-Control'] = 'public, max-age=0'
+    return req

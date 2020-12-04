@@ -1,3 +1,50 @@
+/* ********************************** Nav */
+
+.navbar-custom {
+    background-color: #15bbb3;
+    color: white;
+}
+
+.navbar-brand, .nav-link, .nav-item {
+    color: white;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: white;
+}
+
+
+/* ********************************** Welcome Page */
+
+.navbar-brand, .nav-link, .nav-item {
+    color: white;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: white;
+}
+
+.welcome {
+    color: #15bbb3;
+}
+
+
+
+/* ********************************** Welcome Buttons */
+
+.btn-custom-1 {
+    background-color: #15bbb3;
+    color: white;
+}
+
+.btn-custom-2 {
+    background-color:#5e6472;
+    color:  white;
+
+}
+
+/* ********************************** Graph Buttons */
+
 .btn-first {
     color: white;
     background-color: #f79862;
@@ -31,3 +78,13 @@
     border:0.1em solid #ef7215;
 }
 
+/* ********************************** H's */
+
+
+h1 {
+    color: #15bbb3;
+}
+
+h3 {
+    color: #5e6472;
+}

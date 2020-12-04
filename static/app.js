@@ -3,6 +3,15 @@ $(function() {
 });
 
 
+// WELCOME
+let $welcomePage = $("#welcome")
+
+if ($welcomePage) {
+  $("body").css("background-color", "white");
+}
+
+
+// BUTTONS
 $( "#us-daily-btn" ).click(function() {
     $( "#current-hospital-graph" ).hide();
     $( "#death-daily-graph" ).hide();
@@ -20,3 +29,5 @@ $( "#current-hospital-btn" ).click(function() {
     $( "#current-hospital-graph" ).hide();
     $( "#death-daily-graph" ).show();
 });  
+
+
