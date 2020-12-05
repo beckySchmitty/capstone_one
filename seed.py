@@ -13,7 +13,7 @@ s1 = State(name="oh")
 s2 = State(name="ca")
 s3 = State(name="ny")
 s4 = State(name="nc")
-db.session.add_all([s1, s2, s3])
+db.session.add_all([s1, s2, s3, s4])
 db.session.commit()
 
 # Add Users

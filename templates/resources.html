@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %} Resources {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col">
+        1 of 2
+      </div>
+      <div class="col">
+        2 of 2
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        1 of 4
+      </div>
+      <div class="col">
+        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
+        rel="noopener noreferrer">CDC COVID-19 Home</a>    
+        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
+        rel="noopener noreferrer">CDC COVID-19 Home</a>   
+        </div>
+      <div class="col">
+        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
+        rel="noopener noreferrer">CDC COVID-19 Home</a>    
+        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
+        rel="noopener noreferrer">CDC COVID-19 Home</a>        
+        </div>
+      <div class="col">
+        4 of 4
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
+        <h3>Want these resources in an email?</h3> 
+        <form action="/email/{{user.email}}" method="GET" >
+            <button class="btn btn-warning" type="submit">Email ME</button>
+        </form>       
+        </div>
+    </div>
+    
+
+
+  </div>
+
+
+{% endblock %}

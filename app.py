@@ -59,11 +59,39 @@ def logout_user():
     session[CURR_USER_KEY] = None
 
 
+# ******************************************************************** Welcome / Resource / Email
 
 @app.route('/')
 def welcome():
     """shows homepage for all anon users"""
     return render_template('welcome.html')
+
+@app.route('/resources')
+def show_resources():
+    """shows resource page with email ability"""
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+
+    return render_template('resources.html', user=curr_user)
+
+@app.route("/email/<user_email>")
+def send_email(user_email):
+
+    msg = Message("Hello from my laptop",
+                  sender="becky.schmitthenner@gmail.com",
+                  recipients=[user_email])
+
+    msg.body = "Testing testing 1 2 3"
+    msg.html = "<b>Testing testing 1 2 3</b>"
+
+    mail.send(msg)
+    flash('Email sent, check your inbox', 'success')
+    return redirect('/dashboard')
 
 # ******************************************************************** USER ROUTES
 
@@ -130,25 +158,27 @@ def show_home_dashboard():
 
     return render_template('/user/dashboard.html', user=curr_user, data=data)
 
-@app.route('/user/<int:user_id>/edit', methods=["GET", "POST"])
-def handle_edit_user(user_id):
+@app.route('/user/edit', methods=["GET", "POST"])
+def handle_edit_user():
     form = editUserForm()
-    user = User.query.get(user_id)
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
     if form.validate_on_submit():
         email = form.email.data
-        homestate = form.homestate.email
+        homestate = form.homestate.data
 
-        user.email = email
-        user.homestate = homestate
+        curr_user.email = email
+        curr_user.homestate = homestate
         db.session.commit()
 
-        return redirect('user/profile')
-        # need to create profile page? or dash
+        return redirect('/dashboard')
 
     return render_template('/user/edit.html', form=form)
-        # create edit form
-
 
 
 @app.route('/logout')
@@ -221,26 +251,6 @@ def show_favorites_dashboard():
 
 
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
-
-
-
-
-
-# ******************************************************************** Testing Flask Mail
-
-@app.route("/email")
-def send_email():
-
-    msg = Message("Hello",
-                  sender="becky.schmitthenner@gmail.com",
-                  recipients=["becky.schmitthenner@gmail.com"])
-
-    msg.body = "testing"
-    msg.html = "<b>testing</b>"
-
-    mail.send(msg)
-
-    return "<h1>MESSAGE SENT!!!</h1>"
 
 
 

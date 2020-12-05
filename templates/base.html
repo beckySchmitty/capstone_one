@@ -15,8 +15,9 @@
 <body>
 
     <!-- NAV -->
-    <nav  id="nav-bar" class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="#">myCovidNumber</a>
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">myCovidNumber</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,15 +30,24 @@
             <li class="nav-item">
               <a class="nav-link" href="/favorite/dashboard">Favorites</a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="/favorite/add">Add Fav</a>
+            <li class="nav-item">
+              <a class="nav-link" href="/resources">Resources</a>
             </li>
-            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-
           </ul>
-
+            <ul class="navbar-nav ml-auto">
+              <!-- <li class="nav-item">
+                <a class="nav-link">Right Link 1</a>
+              </li> -->
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/user/edit">Edit User</a>
+                  <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+              </li>
+            </ul>
         </div>
       </nav>
-
 
 <div class="container" style="margin-top: 2em">
   {% for category, msg in get_flashed_messages(with_categories=True) %}
@@ -53,9 +63,10 @@
 </div>
 
 
-<script src="https://unpkg.com/jquery"></script>
-<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script><script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script src="/static/app.js"></script>
+
 
 </body>
 </html>

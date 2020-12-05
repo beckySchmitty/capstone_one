@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 # before we import our app, since that will have already
 # connected to the database
 
-os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-test"
+os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
 
 
 # Now we can import app

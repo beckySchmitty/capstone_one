@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Edit User {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+          <h1>Update your account</h1>
+          <h3>Text</h3>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <form method="POST" id="edit_user_form">
+                {{ form.hidden_tag() }}
+          
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                  {% for error in field.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                  {% endfor %}
+                  {{ field(placeholder=field.label.text, class="form-control") }}
+                {% endfor %}
+          
+                <button class="btn btn-custom-1 btn-md btn-block">Save</button>
+              </form>        </div>
+        <div class="col-sm-4"></div>
+    </div>
+  </div>
+
+
+{% endblock %}
