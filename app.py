@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, State, User, Address, User_Addresses, get_favs 
-from forms import userLoginForm, userSignUpForm, addFavoriteForm
+from forms import userLoginForm, userSignUpForm, addFavoriteForm, editUserForm
 
 from route_helpers import get_state_data, get_multi_state_data
 from extra import my_password
@@ -129,6 +129,27 @@ def show_home_dashboard():
 
 
     return render_template('/user/dashboard.html', user=curr_user, data=data)
+
+@app.route('/user/<int:user_id>/edit', methods=["GET", "POST"])
+def handle_edit_user(user_id):
+    form = editUserForm()
+    user = User.query.get(user_id)
+
+    if form.validate_on_submit():
+        email = form.email.data
+        homestate = form.homestate.email
+
+        user.email = email
+        user.homestate = homestate
+        db.session.commit()
+
+        return redirect('user/profile')
+        # need to create profile page? or dash
+
+    return render_template('/user/edit.html', form=form)
+        # create edit form
+
+
 
 @app.route('/logout')
 def handle_user_logout():

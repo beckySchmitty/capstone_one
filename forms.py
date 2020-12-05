@@ -20,6 +20,13 @@ class userLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
 
+class editUserFrom(FlaskForm):
+    """form to edit user"""
+
+    email = StringField('E-mail', validators=[DataRequired()])
+    homestate = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+
+
 class addFavoriteForm(FlaskForm):
     """form for users to add favorites"""
 
