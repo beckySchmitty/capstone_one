@@ -17,10 +17,9 @@ db.session.add_all([s1, s2, s3, s4])
 db.session.commit()
 
 # Add Users
-u1 = User(username="BoJack Horseman", email="fakeemail@gmail.com", password="password", homestate="oh")
-u2 = User(username="Julia Andrews", email="fake2@gmail.com", password="password", homestate="ny")
-u3 = User(username="Brutus theBuckeye", email="fake3@gmail.com", password="password", homestate="ca")
-db.session.add_all([u1, u2, u3])
+u1 = User.signUp(username="BoJack Horseman", email="fakeemail@gmail.com", password="password", homestate="oh")
+u2 = User.signUp(username="Julia Andrews", email="fake2@gmail.com", password="password", homestate="ny")
+u3 = User.signUp(username="Brutus theBuckeye", email="fake3@gmail.com", password="password", homestate="ca")
 db.session.commit()
 
 

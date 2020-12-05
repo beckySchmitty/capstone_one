@@ -10,9 +10,7 @@ from route_helpers import get_state_data, get_multi_state_data
 from extra import my_password
 
 
-
 app = Flask(__name__)
-
 
 
 app.config.update(dict(
@@ -161,6 +159,7 @@ def show_home_dashboard():
 @app.route('/user/edit', methods=["GET", "POST"])
 def handle_edit_user():
     form = editUserForm()
+
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
 
@@ -246,13 +245,11 @@ def show_favorites_dashboard():
 
     favorites = [address for address in curr_user.addresses]
 
-    favorites_for_api = [address.state_name for address in curr_user.addresses]
+    favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
     favorites_state_data = get_multi_state_data(favorites_for_api)
 
 
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
-
-
 
 
 
@@ -265,3 +262,8 @@ def add_header(req):
     req.headers["Expires"] = "0"
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
+
+
+
+# NOTES TO SELF
+# Search UPDATE_LATER for changes I plan to make when I have more time in the future
