@@ -81,9 +81,17 @@
 
 
 h1 {
-    color: #15bbb3;
+    color: darkblue;
 }
 
 h3 {
     color: #5e6472;
 }
+
+.responsive-welcome {
+    max-width: 100%;
+    height:auto;
+}
+
+/* ************************************** blurr */
+

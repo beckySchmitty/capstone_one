@@ -3,12 +3,13 @@ $(function() {
 });
 
 
-// WELCOME
-let $welcomePage = $("#welcome")
+// // WELCOME
+// let $welcomePage = $("#welcome")
 
-if ($welcomePage) {
-  $("body").css("background-color", "white");
-}
+// if ($welcomePage) {
+//   $("body").css("background-color", "white");
+
+// }
 
 
 // BUTTONS
