@@ -37,3 +37,5 @@ ua3 = User_Addresses(user_id = 1, address_id = 3)
 db.session.add_all([ua1, ua2, ua3])
 db.session.commit()
 
+
+

@@ -2,12 +2,13 @@
 {% block title %} Dashboard {% endblock %}
 {% block content %}
 
+<!-- User Dashboard -->
+
 <div class="container">
     <!-- title -->
     <div class="row">
         <div class="col">
-            <h1> Latest Data for {{data.state}}</h1>
-            <p>Welcome back, {{user.username}} </p>
+            <h1> Current Numbers</h1>
         </div>
       </div>
 
@@ -18,17 +19,19 @@
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Random note and <small class="text-muted">Last updated {{date}} </small> </p>
+              <h5 class="card-title">{{data.full_st_name}}</h5>
+              <p class="card-text">Random note </p>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><strong>New Cases:</strong> {{data.positiveIncrease}}</li>
               <li class="list-group-item"><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</li>
               <li class="list-group-item"><strong>Total Deaths:</strong> {{data.death}}</li>
+              <li class="list-group-item"><small class="text-muted">Last updated {{date}} </small>
+              </li>
             </ul>
             <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <a href="/favorite/dashboard" class="card-link">Favorites</a>
+              <a href="/resources" class="card-link">Resources</a>
             </div>
           </div>
       </div>

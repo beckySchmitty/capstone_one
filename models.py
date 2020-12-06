@@ -34,17 +34,9 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     homestate = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
 
-    # NOT WORKING
-    # Through relationship
     addresses = db.relationship('Address',
                                 secondary='user_addresses',
                                 backref='users')
-
-    # NOT WORKING
-    # attempt at Direct
-    # address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
-    # addresses = db.relationship("Address", backref="users")
-
 
     @classmethod
     def signUp(cls, username, email, password, homestate):
@@ -105,3 +97,6 @@ def get_favs(user_id):
             return [address for address in user.addresses if address.state_name != user.homestate]
         else:
             return None
+
+
+# [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
