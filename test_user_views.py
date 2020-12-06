@@ -33,19 +33,40 @@ class UserViewTestCase(TestCase):
 
         self.client = app.test_client()
 
+        # add states
+        s1 = State(name="oh")
+        s2 = State(name="ca")
+        s3 = State(name="ny")
+        s4 = State(name="nc")
+        db.session.add_all([s1, s2, s3, s4])
+        db.session.commit()
+
+        # add test users
         self.testuser = User.signUp(username="testuser",
                                     email="test@test.com",
                                     password="password",
                                     homestate="oh")
-        self.testuser_id = 999
+        self.testuser_id = 111
         self.testuser.id = self.testuser_id
 
-        self.u1 = User.signUp("one_user", "test1@test.com", "password", "oh")
-        self.u1_id = 111
-        self.u1.id = self.u1_id
-        self.u2 = User.signUp("two_user", "test2@test.com", "password", "ca")
-        self.u2_id = 222
-        self.u2.id = self.u2_id
+        self.testuser_two = User.signUp(username="testuser_two",
+                                    email="test2@test.com",
+                                    password="password",
+                                    homestate="ny")
+        self.testuser_two_id = 222
+        self.testuser_two.id = self.testuser_two_id
+
+        db.session.commit()
+
+        testuser = User.query.get(self.testuser_id)
+        testuser_two = User.query.get(self.testuser_two_id)
+
+        self.testuser = testuser
+        self.testuser_id = self.testuser_id
+
+        self.testuser_two = testuser_two
+        self.testuser_two_id = self.testuser_two_id
+
         self.u3 = User.signUp("three_user", "test3@test.com", "password", "ca")
         self.u4 = User.signUp("four_user", "test4@test.com", "password", "ca")
 
@@ -85,9 +106,8 @@ class UserViewTestCase(TestCase):
 
             resp = client.get('/dashboard', follow_redirects=True)
 
-            self.assertEqual(resp.status_code, 404)
-            self.assertEqual("xxxxxxxx", str(resp.data))
-
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual("Ohio", str(resp.data))
             self.assertNotEqual("Invalid", str(resp.data))
 
 
