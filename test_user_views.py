@@ -33,7 +33,6 @@ class UserViewTestCase(TestCase):
 
         self.client = app.test_client()
 
-
         self.testuser = User.signUp(username="testuser",
                                     email="test@test.com",
                                     password="password",
@@ -41,7 +40,7 @@ class UserViewTestCase(TestCase):
         self.testuser_id = 999
         self.testuser.id = self.testuser_id
 
-        self.u1 = User.signUp("one_user", "test1@test.com", "password", "ca")
+        self.u1 = User.signUp("one_user", "test1@test.com", "password", "oh")
         self.u1_id = 111
         self.u1.id = self.u1_id
         self.u2 = User.signUp("two_user", "test2@test.com", "password", "ca")
@@ -59,7 +58,7 @@ class UserViewTestCase(TestCase):
 
     def user_login(self):
         with self.client as client:
-            resp = c.post('/login', data=dict(
+            resp = client.post('/login', data=dict(
             username=self.username,
             password=self.password
         ), follow_redirects=True)
@@ -70,7 +69,7 @@ class UserViewTestCase(TestCase):
 
     def bad_login(self):
         with self.client as client:
-            resp = c.post('/login', data=dict(
+            resp = client.post('/login', data=dict(
             username=self.username,
             password="incorrectpassword"
         ), follow_redirects=True)
@@ -78,6 +77,18 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 304)
             self.assertNotEqual(f"Welcome back, {self.username}", str(resp.data))
             self.assertIn("Invalid password, try again", str(resp.data))
+
+    def show_dashboard(self):
+        with self.client as client:
+            with client.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser_id
+
+            resp = client.get('/dashboard', follow_redirects=True)
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual("xxxxxxxx", str(resp.data))
+
+            self.assertNotEqual("Invalid", str(resp.data))
 
 
 
