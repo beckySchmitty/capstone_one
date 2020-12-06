@@ -182,7 +182,6 @@ def handle_edit_user():
 
     form = editUserForm(obj=curr_user)
 
-
     if (session_user is None):
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")

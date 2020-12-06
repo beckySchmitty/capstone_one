@@ -5,15 +5,18 @@ from datetime import datetime
 BASE_URL = 'https://api.covidtracking.com/v1/'
 
 def get_state_data(state):
-    """call the COVID tracking API for current data"""
+    """call the COVID tracking API for current data of individual state"""
+    
     resp = requests.get(f"{BASE_URL}/states/{state}/current.json")
-
+    if resp.status_code != 200:
+        flash('The COVID Tracker API is experiencing an error, please come back later', 'danger')
+        send_myself_err_email("get_state_data status code NOT 200")
+    
     state_data = resp.json()
-
     return state_data
 
 def get_multi_state_data(user_favorites):
-
+    
     multi_states_data = []
     for fav in user_favorites:
         resp = requests.get(f"{BASE_URL}/states/{fav}/current.json")
@@ -31,15 +34,5 @@ def get_formatted_date(date):
         date_for_UI = d.isoformat()
     except (ValueError, IndexError):
         date_for_UI = "date not availble"
+        send_myself_err_email("get_formatted_date Error - check API endpoints")
     return date_for_UI
-
-def send_myself_err_email(error):
-
-    msg = Message("ERROR: Capstone Project",
-                  sender="beckySchmittyDev@gmail.com",
-                  recipients=["becky.schmitthenner@gmail.com"])
-
-    msg.body = f"{error}"
-    msg.html = f"{error}"
-
-    mail.send(msg)
