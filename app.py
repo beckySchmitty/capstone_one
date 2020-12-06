@@ -194,9 +194,10 @@ def handle_edit_user():
         curr_user.homestate = homestate
         db.session.commit()
 
+        flash('Account successfully updated', 'success')
         return redirect('/dashboard')
 
-    return render_template('/user/edit.html', form=form)
+    return render_template('/user/edit.html', form=form, user=curr_user)
 
 
 @app.route('/logout')

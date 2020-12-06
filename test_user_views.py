@@ -43,7 +43,7 @@ class UserViewTestCase(TestCase):
 
         # add test users
         self.testuser = User.signUp(username="testuser",
-                                    email="test@test.com",
+                                    email="firstemail@gmail.com",
                                     password="password",
                                     homestate="oh")
         self.testuser_id = 111
@@ -109,6 +109,37 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertEqual("Ohio", str(resp.data))
             self.assertNotEqual("Invalid", str(resp.data))
+
+    def show_user_edit_form(self):
+        with self.client as client:
+            with client.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser_id
+
+            resp = client.get('/user/edit', follow_redirects=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual("Update Your Account", str(resp.data))
+            self.assertNotEqual("Invalid", str(resp.data))
+
+    def handle_user_edit(self):
+        with self.client as client:
+            with client.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser_id
+
+            user = User.query,get(self.testuser_id)    
+
+            resp = client.post('/user/edit', data=dict(
+            email="newemail@gmail.com",
+            homestate="oh"
+        ), follow_redirects=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(user.email, "newemail@gmail.com")
+            self.assertNotEqual(user.email, "firstemail@gmail.com")
+            self.assertEqual("Account successfully updated", str(resp.data))
+            self.assertNotEqual("Invalid", str(resp.data))
+
+
 
 
 
