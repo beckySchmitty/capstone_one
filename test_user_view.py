@@ -75,6 +75,8 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn(f"Welcome back, {self.username}", str(resp.data))
+            self.assertNotEqual("Invalid password, try again", str(resp.data))
+
 
     def bad_login(self):
         with self.client as client:

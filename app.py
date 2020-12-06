@@ -6,8 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, State, User, Address, User_Addresses, get_favs 
 from forms import userLoginForm, userSignUpForm, addFavoriteForm, editUserForm
 
-from route_helpers import get_state_data, get_multi_state_data
-from extra import my_password
+from route_helpers import get_state_data, get_multi_state_data, get_formatted_date
+from extra import my_password, MY_SECRET_KEY
 
 
 app = Flask(__name__)
@@ -19,17 +19,16 @@ app.config.update(dict(
     MAIL_PORT = 587,
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
-    MAIL_USERNAME = 'becky.schmitthenner@gmail.com',
-    MAIL_PASSWORD = my_password,
+    MAIL_USERNAME = 'beckySchmittyDev@gmail.com',
+    MAIL_PASSWORD = my_password
 ))
 mail = Mail(app)
-
 
 # connect to specific database in postgresql
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft2'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = "key9876"
+app.config['SECRET_KEY'] = MY_SECRET_KEY
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
@@ -37,7 +36,21 @@ connect_db(app)
 
 # db.create_all()
 
+
 CURR_USER_KEY = "current_user"
+
+
+def send_myself_err_email(error):
+    """Email myself errors. Created in anticipation of API changes or other edge cases"""
+
+    msg = Message("ERROR: Capstone Project",
+                  sender="beckySchmittyDev@gmail.com",
+                  recipients=["becky.schmitthenner@gmail.com"])
+
+    msg.body = f"{error}"
+    msg.html = f"{error}"
+
+    mail.send(msg)
 
 
 # Funcs to find and authenticate user via flask session
@@ -81,7 +94,7 @@ def show_resources():
 def send_email(user_email):
 
     msg = Message("Hello from my laptop",
-                  sender="becky.schmitthenner@gmail.com",
+                  sender="beckySchmittyDev@gmail.com",
                   recipients=[user_email])
 
     msg.body = "Testing testing 1 2 3"
@@ -90,6 +103,7 @@ def send_email(user_email):
     mail.send(msg)
     flash('Email sent, check your inbox', 'success')
     return redirect('/dashboard')
+
 
 # ******************************************************************** USER ROUTES
 
@@ -150,18 +164,24 @@ def show_home_dashboard():
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")
 
-
     data = get_state_data(curr_user.homestate)
 
+    try:
+        date = get_formatted_date(data["date"])
+    except (KeyError):
+        date = "date not availble"
+        send_myself_err_email("KeyError")
 
-    return render_template('/user/dashboard.html', user=curr_user, data=data)
+    return render_template('/user/dashboard.html', user=curr_user, data=data, date=date)
 
 @app.route('/user/edit', methods=["GET", "POST"])
 def handle_edit_user():
-    form = editUserForm()
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
+
+    form = editUserForm(obj=curr_user)
+
 
     if (session_user is None):
         flash("Unauthorized access. Please sign up or login", "danger")
@@ -169,7 +189,7 @@ def handle_edit_user():
 
     if form.validate_on_submit():
         email = form.email.data
-        homestate = form.homestate.data
+        homestate = form.homestate.data 
 
         curr_user.email = email
         curr_user.homestate = homestate
