@@ -3,13 +3,13 @@ $(function() {
 });
 
 
-// // WELCOME
-// let $welcomePage = $("#welcome")
+// WELCOME
+let $welcomePage = $("#welcome")
 
-// if ($welcomePage) {
-//   $("body").css("background-color", "white");
+if ($welcomePage) {
+  $("body").css("background-image", "https://images.unsplash.com/photo-1585378335564-c220f04a9ad0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80");
 
-// }
+}
 
 
 // BUTTONS

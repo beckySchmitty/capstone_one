@@ -1,7 +1,7 @@
 /* ********************************** Nav */
 
 .navbar-custom {
-    background-color: #15bbb3;
+    background-color: #b62747;
     color: white;
 }
 
@@ -81,7 +81,7 @@
 
 
 h1 {
-    color: darkblue;
+    color: #b62747;
 }
 
 h3 {
@@ -93,5 +93,4 @@ h3 {
     height:auto;
 }
 
-/* ************************************** blurr */
-
+/* ************************************** welcomepage */
