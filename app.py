@@ -3,7 +3,7 @@ from flask_mail import Mail, Message
 from flask_debugtoolbar import DebugToolbarExtension 
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, State, User, Address, User_Addresses, get_favs 
+from models import db, connect_db, State, User, Address, User_Addresses
 from forms import userLoginForm, userSignUpForm, addFavoriteForm, editUserForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date
@@ -75,7 +75,8 @@ def logout_user():
 @app.route('/')
 def welcome():
     """shows homepage for all anon users"""
-    return render_template('welcome.html')
+    user = find_user()
+    return render_template('welcome.html', user=user)
 
 @app.route('/resources')
 def show_resources():
@@ -263,11 +264,10 @@ def show_favorites_dashboard():
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")
 
-    favorites = [address for address in curr_user.addresses]
+    favorites = User.get_favs(curr_user)
 
     favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
     favorites_state_data = get_multi_state_data(favorites_for_api)
-
 
     return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
 

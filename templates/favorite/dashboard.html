@@ -2,6 +2,7 @@
 {% block title %} Favs Dashboard {% endblock %}
 {% block content %}
 
+{% if favorites %}
 <div class="container">
     <div class="row">
       <div class="col-sm-8">
@@ -24,7 +25,16 @@
       </div>
       <div class="col-sm-4"></div>
     </div>
- 
+{% else %}
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+            <h1> No Favs - have this show form</h1>
+            
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+ {% endif %}
 
 
 {% endblock %}

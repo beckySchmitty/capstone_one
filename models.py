@@ -62,6 +62,12 @@ class User(db.Model):
         
         return False
 
+    @classmethod
+    def get_favs(cls, user):
+        """Return user favorites or None"""
+        favorites = [address for address in user.addresses if address.favorite is True]
+        return favorites
+
 
 class Address(db.Model):
     """Address model"""
@@ -87,16 +93,6 @@ class User_Addresses(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'), primary_key=True)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id', ondelete='cascade'), primary_key=True)
     note = db.Column(db.Text)
-
-
-def get_favs(user_id):
-    user = User.query.get(user_id)
-
-    for address in user.addresses:
-        if address.favorite is True:
-            return [address for address in user.addresses if address.state_name != user.homestate]
-        else:
-            return None
 
 
 # [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]

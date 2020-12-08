@@ -13,8 +13,12 @@
       <div class="col-sm-6">
         <h1>COVID-19 Numbers. Everyday.</h1>
         <h3>How many cases in my state? What about that state my loved ones are in?</h3>
+        {% if user %}
+        <a class="btn btn-custom-2 btn-lg" href="/logout">Logout</a>
+        {% else %}
         <a class="btn btn-custom-2 btn-lg" href="/login">Login</a>
         <a class="btn btn-custom-1 btn-lg" href="/signup">Sign Up</a>
+        {% endif %}
       </div>
     </div>
 
