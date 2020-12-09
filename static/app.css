@@ -1,8 +1,13 @@
+/* main color pallet: #051e3e • #251e3e • #451e3e • #651e3e • #851e3e */
+/* grey color pallet: #6e7f80 • #536872 • #708090 • #536878 • #36454f
+ */
+
+
 /* ********************************** Nav */
 
 .navbar-custom {
-    background-color: #b62747;
-    color: white;
+    background-color: #451e3e;
+    color:white;
 }
 
 .navbar-brand, .nav-link, .nav-item {
@@ -21,8 +26,15 @@
 }
 
 .navbar-brand:hover, .nav-link:hover {
-    color: white;
+    color: #708090;
 }
+.custom-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(250, 250, 250)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+
+.custom-toggler.navbar-toggler {
+    border-color: rgb(250, 250, 250);
+  } 
 
 .welcome {
     color: #15bbb3;
@@ -32,14 +44,31 @@
 /* ********************************** Welcome Buttons */
 
 .btn-custom-1 {
-    background-color: #15bbb3;
+    background-color: #051e3e;
     color: white;
+    ;
+}
+
+.btn-custom-1:hover {
+    /* color: #051e3e; */
+    color: white;
+    background-color: #451e3e;
+    border-color: white;
 }
 
 .btn-custom-2 {
-    background-color:#5e6472;
-    color:  white;
+    color:  #651e3e;
+    border-color: #651e3e;
 
+}
+
+.btn-custom-2:hover {
+    color: white;
+    background-color: #651e3e;
+}
+
+h6 {
+    color:#051e3e;
 }
 
 /* ********************************** Graph Buttons */
@@ -81,11 +110,15 @@
 
 
 h1 {
-    color: #b62747;
+    /* color: #651e3e; */
+    color: #051e3e;
+
 }
 
 h3 {
-    color: #5e6472;
+    /* color: #051e3e; */
+    color: #651e3e;
+
 }
 
 .responsive-welcome {

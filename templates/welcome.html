@@ -10,21 +10,21 @@
 
       <div class="col-sm">
 
-          <img class="responsive-welcome" src="https://images.unsplash.com/photo-1585858229735-cd08d8cb510d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="">
+          <img class="responsive-welcome" src="https://thumbs.dreamstime.com/b/vector-isolated-element-black-white-coronavirus-virus-background-hand-drawn-doodle-style-vector-isolated-element-181464275.jpg" alt="covid germ">
         </div>
 
 
         <div class="col-sm">
         <h1>Daily COVID-19 Numbers</h1>
-        <h1>By State</h1>
+        <h>By State</h1>
 
 
         <h3>Personaized dashboard for you and your loved ones</h3>
         {% if user %}
-        <a class="btn btn-custom-2 btn-lg" href="/logout">Logout</a>
+        <a class="btn btn-custom-1 btn-lg btn-outline btn-block" href="/logout">Logout</a>
         {% else %}
-        <a class="btn btn-custom-2 btn-lg" href="/login">Login</a>
-        <a class="btn btn-custom-1 btn-lg" href="/signup">Sign Up</a>
+        <a class="btn btn-custom-1 btn-lg btn-block" href="/signup">Sign Up</a>
+        <h6 style="float:right;">Have an account? <a class="btn btn-custom-2 btn-sm p-1 m-2" href="/login">Login</a></h6>
         {% endif %}
         </div>
       </div>
