@@ -171,3 +171,20 @@ h6 {
     color: white;
     background-color: black;
 }
+
+
+/* ************************************** Footer */
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px; 
+    /* background-color: #051e3e; */
+    background-color: #451e3e;
+  }
+
+  .footer a {
+      color: white;
+  }
