@@ -126,4 +126,16 @@ h3 {
     height:auto;
 }
 
-/* ************************************** welcomepage */
+/* ************************************** Homestate Dashboard */
+
+.card-link {
+    color: #851e3e;
+}
+
+.card-link:hover {
+    color: black;
+}
+
+#state-title {
+    color: #651e3e;
+}
