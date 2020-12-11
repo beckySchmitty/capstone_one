@@ -6,7 +6,8 @@
 <div class="container">
     <div class="row">
       <div class="col-sm-8">
-        <h1>{{user.username}}'s Favorites</h1>
+        <h1>{{user.username}}'s Favorites <a href="/favorite/add"><i class="fas fa-plus-circle"></i></a></h1>
+        <h4>Know the numbers to plan your travel or inform your loved ones</h4>
 
         {% for state in favorites_state_data %}
 

@@ -70,7 +70,7 @@ def logout_user():
     session[CURR_USER_KEY] = None
 
 
-# ******************************************************************** Welcome / Resource / Email
+# ******************************************************************** Welcome 
 
 @app.route('/')
 def welcome():
@@ -78,32 +78,6 @@ def welcome():
     user = find_user()
     return render_template('welcome.html', user=user)
 
-@app.route('/resources')
-def show_resources():
-    """shows resource page with email ability"""
-    curr_user = User.query.get(session[CURR_USER_KEY])
-    session_user = find_user()
-
-    if (session_user is None):
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
-
-
-    return render_template('resources.html', user=curr_user)
-
-@app.route("/email/<user_email>")
-def send_email(user_email):
-
-    msg = Message("COVID-19 Resources (myCOVIDNumber)",
-                  sender="beckySchmittyDev@gmail.com",
-                  recipients=[user_email])
-
-    msg.body = "CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html"
-    msg.html = "<p>CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html</p><p>Learn more about testing: https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html</p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
-    
-    mail.send(msg)
-    flash('Email sent, check your inbox', 'success')
-    return redirect('/dashboard')
 
 
 # ******************************************************************** USER ROUTES
@@ -124,7 +98,7 @@ def handle_signup():
             db.session.commit()
 
         except IntegrityError:
-            flash('Username already taken', 'danger')
+            flash('Please try again', 'danger')
             return render_template('/user/signup.html', form=form)
         
         user_login(new_user)
@@ -259,7 +233,7 @@ def handle_add_favorite_form(nickname):
 
     return render_template('/favorite/edit.html', form=form, nickname=nickname)
 
-@app.route('/favorite/edit', methods=["GET", "POST"])
+@app.route('/favorite/add', methods=["GET", "POST"])
 def handle_edit_favorite_form():
 
     curr_user = User.query.get(session[CURR_USER_KEY])
@@ -307,6 +281,35 @@ def handle_edit_favorite_form():
 
 
 
+# ************************************************************************* Resources
+
+
+@app.route('/resources')
+def show_resources():
+    """shows resource page with email ability"""
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+
+    return render_template('resources.html', user=curr_user)
+
+@app.route("/email/<user_email>")
+def send_email(user_email):
+
+    msg = Message("COVID-19 Resources (myCOVIDNumber)",
+                  sender="beckySchmittyDev@gmail.com",
+                  recipients=[user_email])
+
+    msg.body = "CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+    msg.html = "<p><a href='https://www.cdc.gov/coronavirus/2019-ncov/index.html'>CDC Home</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html'>Learn More About Testing</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>Check Your Symptoms</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html'>Learn About Vaccines</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html'>What To Do If You're Sick</a></p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
+    
+    mail.send(msg)
+    flash('Email sent, check your inbox', 'success')
+    return redirect('/dashboard')
 
 
 

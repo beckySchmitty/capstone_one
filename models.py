@@ -12,7 +12,9 @@ bcrypt = Bcrypt()
 
 
 class State(db.Model):
-    """State"""
+    """State
+    
+    name is abbreviation since API only takes state abbrv"""
 
     __tablename__ = "states"
 
