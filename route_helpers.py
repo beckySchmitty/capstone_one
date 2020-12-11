@@ -16,7 +16,7 @@ def get_state_data(state):
     state_data = resp.json()
 
     # Update data to fit UI needs
-    state_data = format_for_UI(state_data, state, ["positiveIncrease", "totalTestResultsIncrease", "positive", "hospitalizedCurrently", "inIcuCurrently", "onVentilatorCurrently", "deathIncrease", "death", "recovered"], "homestate")
+    state_data = format_for_UI(state_data, state, ["positiveIncrease", "totalTestResultsIncrease", "positive", "hospitalizedCurrently", "inIcuCurrently", "onVentilatorCurrently", "deathIncrease", "death", "recovered", "negative", "pending"], "homestate")
 
     return state_data
 
@@ -65,7 +65,7 @@ def add_commas(state_data, keys):
         if state_data[f"{key}"] is not None:
             state_data[f"{key}"] = "{:,}".format(int((state_data[f"{key}"])))
         else:
-            state_data[f"{key}"] = "data not available"
+            state_data[f"{key}"] = "-"
     return state_data
 
 us_states_dict = {

@@ -130,6 +130,21 @@ th {
     color: white;
 }
 
+table th {
+    text-align: center; 
+ }
+
+ #hosp-table {
+     width: 50%;
+     justify-content: center;
+ }
+
+ #death-table {
+    width: 50%;
+    justify-content: center;
+    background-color: #451e3e;
+
+ }
 
 /* ************************************** Resources*/
 .icon-r {
@@ -156,7 +171,7 @@ th {
 .footer {
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: 100vw;
     height: 60px;
     line-height: 60px; 
     /* background-color: #051e3e; */

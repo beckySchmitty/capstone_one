@@ -5,35 +5,45 @@
 <!-- User Dashboard -->
 
 <div class="container">
-  <div class="row">
+  <div class="row ">
     <h1>{{data.full_st_name}}</h1>
   </div>
-  <table class="table table-hover table-dark">
+
+  <div class="row">
+    <p>(<small class="text-muted"><em>Last updated {{data.date}}</em></small>)</p>
+
+  </div>
+
+  <div class="row">
+  <table class="table table-hover table-dark text-center">
     <thead>
       <tr>
-        <th scope="col">STATE</th>
-        <th scope="col">Entire US</th>
+        <th colspan="3">CASES</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="text-center">
       <tr>
-        <td>New: {{data.positiveIncrease}}</td>
-        <td>X</td>
+        <td>New Cases: {{data.positiveIncrease}}</td>
+        <td>Pending Tests: {{data.pending}}</td>
+
       </tr>
       <tr>
-        <td>Increase: {{data.totalTestResultsIncrease}}</td>
-        <td>X</td>
+        <td>Case Increase: {{data.totalTestResultsIncrease}}</td>
+        <td>Total Negative Tests: {{data.negative}}</td>
+
       </tr>
       <tr>
-        <td>Total Reported: {{data.positive}}</td>
-        <td>X</td>
+        <td>Total Reported Cases: {{data.positive}}</td>
+        <td>Total Recovered:</strong> {{data.recovered}}</td>
       </tr>
     </tbody>
   </table>
+</div>
 
 
-
-  <table class="table  table-hover table-sm table-custom-1">
+<div class="row">
+  <div class="col">
+  <table id="hosp-table" class="table  table-hover table-sm table-custom-1 text-center">
     <thead>
       <tr>
         <th colspan="3">Hospitalizations</th>
@@ -41,86 +51,38 @@
     </thead>
     <tbody>
       <tr>
-        <td>New Cases: </td>
-        <td>{{data.positiveIncrease}}</td>
+        <td><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</td>
       </tr>
       <tr>
-        <td>Increase in Cases: {{data.totalTestResultsIncrease}}</td>
+        <td><strong>Hospitalized Increase:</strong> {{data.hospitalizedIncrease}}</td>
       </tr>
       <tr>
-        <td>Total Reported Cases: {{data.positive}}</td>
+        <td><strong>Currently in ICU:</strong> {{data.inIcuCurrently}}</td>
+      </tr>
+      <tr>
+        <td><strong>Currently on ventilator:</strong> {{data.onVentilatorCurrently}}</td>
       </tr>
     </tbody>
   </table>
+</div>
 
-
-
-
-  
-    <div class="row">
-        <div class="card-columns">
-        <div class="col">
-        <div class="card" >
-          <div class="card-header"></div>
-            <div class="card-body">
-              <h3 id="state-title" class="card-title">Cases</h3>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>New Cases:</strong> {{data.positiveIncrease}}</li>
-              <li class="list-group-item"><strong>Increase: </strong> {{data.totalTestResultsIncrease}}</li>
-              <li class="list-group-item"><strong>Total Reported Cases:</strong> {{data.positive}}</li>
-              </li>
-            </ul>
-            <div class="card-body">
-              <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a>
-              <a href="/resources" class="card-link"><strong>Resources</strong></a>
-              <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{data.date}}</em></small></p>
-              </div>
-          </div>
-      </div>
-    </div>
-
-    <div class="col">
-        <div class="card" >
-          <div class="card-header"></div>
-            <div class="card-body">
-              <h3 id="state-title" class="card-title">Hospitalizations</h3>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</li>
-              <li class="list-group-item"><strong>Hospitalized Increase:</strong> {{data.hospitalizedIncrease}}</li>
-              <li class="list-group-item"><strong>Currently in ICU:</strong> {{data.inIcuCurrently}}</li>
-              <li class="list-group-item"><strong>Currently on ventilator:</strong> {{data.onVentilatorCurrently}}</li>
-            </ul>
-            <div class="card-body">
-              <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a>
-              <a href="/resources" class="card-link"><strong>Resources</strong></a>
-              <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{data.date}}</em></small></p>
-              </div>
-          </div>
-        </div>
-
-        <div class="col">
-        <div class="card">
-          <div class="card-header"></div>
-            <div class="card-body">
-              <h3 id="state-title" class="card-title">Deaths</h3>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Death Increase: </strong> {{data.deathIncrease}}</li>
-              <li class="list-group-item"><strong>Total Deaths:</strong> {{data.death}}</li>
-              <li class="list-group-item"><strong>Total Recovered:</strong> {{data.recovered}}</li>
-
-              </li>
-            </ul>
-            <div class="card-body">
-              <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a>
-              <a href="/resources" class="card-link"><strong>Resources</strong></a>
-              <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{data.date}}</em></small></p>
-              </div>
-          </div>
-        </div>
-      </div>
+<div class="col">
+  <table id="death-table" class="table  table-hover table-sm table-custom-1 text-center">
+    <thead>
+      <tr>
+        <th colspan="3">Deaths</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Death Increase: </strong> {{data.deathIncrease}}</td>
+      </tr>
+      <tr>
+        <td>Total Deaths:</strong> {{data.death}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
   </div> 

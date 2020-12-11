@@ -5,12 +5,12 @@
 {% if favorites_state_data %}
 <div class="container">
     <div class="row">
-      <div class="col-sm-8">
         <h1>{{user.username}}'s Favorites <a href="/favorite/add"><i class="fas fa-plus-circle"></i></a></h1>
         <h4>Know the numbers to plan your travel or inform your loved ones</h4>
+    </div>
 
         {% for state in favorites_state_data %}
-
+        <div class="col">
         <div class="card" style="width: 18rem;">
           <div class="card-header"></div>
           <div class="card-body">
@@ -34,7 +34,7 @@
 {% else %}
     <div class="container">
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col">
             <h1> You haven't added any favorites yet</h1>
             <a class="btn btn-custom-1 btn-lg btn-outline btn-block" href="/favorite/add">Add Favorite(s)</a>
 
