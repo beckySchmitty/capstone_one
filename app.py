@@ -266,10 +266,11 @@ def show_favorites_dashboard():
 
     favorites = User.get_favs(curr_user)
 
-    favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
-    favorites_state_data = get_multi_state_data(favorites_for_api)
+    # favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
 
-    return render_template('/favorite/dashboard.html', user=curr_user, favorites=favorites, favorites_state_data=favorites_state_data)
+    favorites_for_api = [address.state_name for address in favorites if address.state_name != curr_user.homestate]
+    favorites_state_data = get_multi_state_data(favorites_for_api)
+    return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
 
 
 

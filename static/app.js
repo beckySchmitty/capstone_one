@@ -3,37 +3,37 @@ $(function() {
 });
 
 
-// WELCOME
-let $welcomePage = $("#welcome")
+// // WELCOME
+// let $welcomePage = $("#welcome")
 
-if ($welcomePage) {
-  $("body").css("background-color", "#651e3e");
+// if ($welcomePage) {
+//   $("body").css("background-color", "#651e3e");
 
-}
+// }
 
-if ($welcomePage) {
-  $("body").css("background-color", "white");
+// if ($welcomePage) {
+//   $("body").css("background-color", "white");
 
-}
+// }
 
 
 // BUTTONS
-$( "#us-daily-btn" ).click(function() {
-    $( "#current-hospital-graph" ).hide();
-    $( "#death-daily-graph" ).hide();
-    $( "#us-daily-graph" ).show();
-  });
+// $( "#us-daily-btn" ).click(function() {
+//     $( "#current-hospital-graph" ).hide();
+//     $( "#death-daily-graph" ).hide();
+//     $( "#us-daily-graph" ).show();
+//   });
 
-$( "#current-hospital-btn" ).click(function() {
-        $( "#us-daily-graph" ).hide();
-        $( "#death-daily-graph" ).hide();
-        $( "#current-hospital-graph" ).show();
-  });  
+// $( "#current-hospital-btn" ).click(function() {
+//         $( "#us-daily-graph" ).hide();
+//         $( "#death-daily-graph" ).hide();
+//         $( "#current-hospital-graph" ).show();
+//   });  
 
-  $( "#death-daily-btn" ).click(function() {
-    $( "#us-daily-graph" ).hide();
-    $( "#current-hospital-graph" ).hide();
-    $( "#death-daily-graph" ).show();
-});  
+//   $( "#death-daily-btn" ).click(function() {
+//     $( "#us-daily-graph" ).hide();
+//     $( "#current-hospital-graph" ).hide();
+//     $( "#death-daily-graph" ).show();
+// });  
 
 

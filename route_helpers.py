@@ -67,6 +67,13 @@ us_states_dict = {
     "wy": "Wyoming"
 	}
 
+def add_commas(state_data, keys):
+    """Add's commas to number from API"""
+    for key in keys:
+        state_data[f"{key}"] = "{:,}".format(int((state_data[f"{key}"])))
+    return state_data
+
+
 def get_state_data(state):
     """call the COVID tracking API for current data of individual state"""
     
@@ -81,6 +88,17 @@ def get_state_data(state):
     # API only provides abbreviation of state - adding state name for UI
     state_data['full_st_name'] = us_states_dict[state]
 
+    # # adding commas to #'s from API
+    # state_data['positiveIncrease'] = "{:,}".format(state_data['positiveIncrease'])
+    # state_data['totalTestResultsIncrease'] = "{:,}".format(state_data['totalTestResultsIncrease'])
+    # state_data['positive'] = "{:,}".format(state_data['positive'])
+    # state_data['hospitalizedCurrently'] = "{:,}".format(state_data['hospitalizedCurrently'])
+    # state_data['hospitalizedIncrease'] = "{:,}".format(state_data['hospitalizedIncrease'])
+    # state_data['inIcuCurrently'] = "{:,}".format(state_data['inIcuCurrently'])
+    # state_data['onVentilatorCurrently'] = "{:,}".format(state_data['onVentilatorCurrently'])
+
+    state_data = add_commas(state_data, ['positiveIncrease', 'totalTestResultsIncrease', 'positive', 'hospitalizedCurrently', 'inIcuCurrently', 'onVentilatorCurrently', 'deathIncrease', 'death', 'recovered'])
+
     return state_data
 
 def get_multi_state_data(user_favorites):
@@ -90,6 +108,10 @@ def get_multi_state_data(user_favorites):
         resp = requests.get(f"{BASE_URL}/states/{fav}/current.json")
         state_data = resp.json()
         multi_states_data.append(state_data)
+
+# adding ability to change abr to full name
+        # for state in multi_states_data:
+        #     state['full_st_name'] = us_states_dict[state]           
 
     return multi_states_data
 

@@ -5,31 +5,22 @@
 <!-- User Dashboard -->
 
 <div class="container">
-    <!-- title -->
-    <div class="row">
-        <div class="col">
-            <h1> Homestate</h1>
-        </div>
-        <div class="col">
-          <h1> US</h1>
-      </div>
-      </div>
-
+  <div class="row">
+    <h1>{{data.full_st_name}}</h1>
+  </div>
   
-    <!-- homestate & graphs -->
     <div class="row">
-      <div id="homestate-stats-container" class="col-6">
+        <div class="card-columns">
 
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="https://images.squarespace-cdn.com/content/v1/5d26a468a301f700016748dd/1596537676551-BFF8VKQ66LQG5642GPV2/ke17ZwdGBToddI8pDm48kK03m88BlLEM2mUdZOkNgFIUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcNd2h9X9ZGGeEeSyBQxtXQCom5bJX64g0TRud85m5BuwajXHjYom9sTe88Tg8VNZF/coronavirus-horizontal.jpg?format=2500w" alt="covid card image cap">
+        <div class="card" >
+          <div class="card-header"></div>
             <div class="card-body">
-              <h3 id="state-title" class="card-title">{{data.full_st_name}}</h3>
-              <!-- <p class="card-text">Random note </p> -->
+              <h3 id="state-title" class="card-title">Cases</h3>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><strong>New Cases:</strong> {{data.positiveIncrease}}</li>
-              <li class="list-group-item"><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</li>
-              <li class="list-group-item"><strong>Total Deaths:</strong> {{data.death}}</li>
+              <li class="list-group-item"><strong>Increase: </strong> {{data.totalTestResultsIncrease}}</li>
+              <li class="list-group-item"><strong>Total Reported Cases:</strong> {{data.positive}}</li>
               </li>
             </ul>
             <div class="card-body">
@@ -40,41 +31,51 @@
           </div>
       </div>
 
-      <div id="buttons-div" class="col-2">
-            <button id="us-daily-btn" type="button" class="btn btn-first m-1">Cases</button>
-            <button id="current-hospital-btn" type="button" class="btn btn-second m-1">Hospitalized </button>
-            <button id="death-daily-btn" type="button" class="btn btn-third m-1">Deaths </button>      
+
+        <div class="card" >
+          <div class="card-header"></div>
+            <div class="card-body">
+              <h3 id="state-title" class="card-title">Hospitalizations</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</li>
+              <li class="list-group-item"><strong>Hospitalized Increase:</strong> {{data.hospitalizedIncrease}}</li>
+              <li class="list-group-item"><strong>Currently in ICU:</strong> {{data.inIcuCurrently}}</li>
+              <li class="list-group-item"><strong>Currently on ventilator:</strong> {{data.onVentilatorCurrently}}</li>
+            </ul>
+            <div class="card-body">
+              <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a>
+              <a href="/resources" class="card-link"><strong>Resources</strong></a>
+              <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{date}}</em></small></p>
+              </div>
+          </div>
+
+        <div class="card">
+          <div class="card-header"></div>
+            <div class="card-body">
+              <h3 id="state-title" class="card-title">Deaths</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Death Increase: </strong> {{data.deathIncrease}}</li>
+              <li class="list-group-item"><strong>Total Deaths:</strong> {{data.death}}</li>
+              <li class="list-group-item"><strong>Total Recovered:</strong> {{data.recovered}}</li>
+
+              </li>
+            </ul>
+            <div class="card-body">
+              <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a>
+              <a href="/resources" class="card-link"><strong>Resources</strong></a>
+              <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{date}}</em></small></p>
+              </div>
+          </div>
         </div>
 
-      <div id="us-graphs-container" class="col-4">
 
-        <div id="us-daily-graph" class="col-sm" style="display: none">
-            <div class='tableauPlaceholder' id='viz1606591308947' style='position: relative'><noscript><a href='https:&#47;&#47;covidtracking.com&#47;'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;2_USPositive&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CTPWebsiteGallery&#47;2_USPositive' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;2_USPositive&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='origin' value='viz_share_link' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1606591308947');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1000px';vizElement.style.height='627px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-          </div>  
-        </div>
-
-        <div id="current-hospital-graph" class="col-sm" style="display: none">
-          <div class='tableauPlaceholder' id='viz1606884496707' style='position: relative'><noscript><a href='https:&#47;&#47;covidtracking.com&#47;'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;7_USCHospitalized&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CTPWebsiteGallery&#47;7_USCHospitalized' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;7_USCHospitalized&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='origin' value='viz_share_link' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1606884496707');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1000px';vizElement.style.height='627px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-        </div>
-
-        <div id="death-daily-graph" class="col-sm" style="display: none">
-          <div class='tableauPlaceholder' id='viz1606884554721' style='position: relative'><noscript><a href='https:&#47;&#47;covidtracking.com&#47;'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;3_USDeath&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CTPWebsiteGallery&#47;3_USDeath' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CT&#47;CTPWebsiteGallery&#47;3_USDeath&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /><param name='origin' value='viz_share_link' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1606884554721');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1000px';vizElement.style.height='627px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-        </div>
+  </div> 
 
 
-      </div>
-    </div>
 
-    <!-- below -->
-    <div class="row">
-      <div class="col">
-        <!-- <h6>Data updated everyday between 6-7:30pm EST.</h6> -->
 
-      </div>
-      <div class="col">
-      </div>
-  
-    </div>
 
   </div>
 
