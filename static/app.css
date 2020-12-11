@@ -164,6 +164,12 @@ table th {
     color: white;
 }
 
+/* ************************************** Favorites */
+
+#fav-plus {
+    color: #0f52ba;
+}
+
 
 
 /* ************************************** Footer */
@@ -181,9 +187,6 @@ table th {
   .footer a {
       color: white;
   }
-
-
-
 
 
 

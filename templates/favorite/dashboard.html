@@ -2,46 +2,49 @@
 {% block title %} Favs Dashboard {% endblock %}
 {% block content %}
 
+
 {% if favorites_state_data %}
 <div class="container">
-    <div class="row">
-        <h1>{{user.username}}'s Favorites <a href="/favorite/add"><i class="fas fa-plus-circle"></i></a></h1>
-        <h4>Know the numbers to plan your travel or inform your loved ones</h4>
-    </div>
-
-        {% for state in favorites_state_data %}
-        <div class="col">
-        <div class="card" style="width: 18rem;">
-          <div class="card-header"></div>
-          <div class="card-body">
-            <h3 id="state-title" class="card-title">{{state.full_st_name}}</h3>
-            <p class="card-text">{{state.nickname}}</p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>New Cases:</strong> {{state.positiveIncrease}}</li>
-            <li class="list-group-item"><strong>Currently hospitalized:</strong> {{state.hospitalizedCurrently}}</li>
-            <li class="list-group-item"><strong>Total Deaths:</strong> {{state.death}}</li>
-            </li>
-          </ul>
-          <div class="card-body">
-            <a href="/favorite/edit/{{state.nickname}}" class="card-link"><span class="badge badge-dark">Edit</span></a>
-            <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{state.date}}</em></small></p>
-            </div>
+  <div class="row">
+    <h1>{{user.username}}'s Favorites <a href="/favorite/add"><i  id="fav-plus" class="fas fa-plus-circle"></i></a></h1>
+    <h4>Know the numbers to plan your travel or inform your loved ones</h4>
+  </div>
+  <div class="row">
+    {% for state in favorites_state_data %}
+    <div class="col">
+    <div class="card" style="width: 18rem;">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <h3 id="state-title" class="card-title">{{state.full_st_name}}</h3>
+        <p class="card-text">{{state.nickname}}</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>New Cases:</strong> {{state.positiveIncrease}}</li>
+        <li class="list-group-item"><strong>Currently hospitalized:</strong> {{state.hospitalizedCurrently}}</li>
+        <li class="list-group-item"><strong>Total Deaths:</strong> {{state.death}}</li>
+        </li>
+      </ul>
+      <div class="card-body">
+        <a href="/favorite/edit/{{state.nickname}}" class="card-link"><span class="badge badge-dark">Edit</span></a>
+        <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{state.date}}</em></small></p>
         </div>
-        {% endfor %}
+    </div>
+    </div>
+    {% endfor %}
 
 
 {% else %}
-    <div class="container">
-      <div class="row">
-        <div class="col">
-            <h1> You haven't added any favorites yet</h1>
-            <a class="btn btn-custom-1 btn-lg btn-outline btn-block" href="/favorite/add">Add Favorite(s)</a>
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <h1> You haven't added any favorites yet</h1>
+        <a class="btn btn-custom-1 btn-lg btn-outline btn-block" href="/favorite/add">Add Favorite(s)</a>
 
-        </div>
-        <div class="col-sm-4"></div>
-      </div>
- {% endif %}
+    </div>
+  </div>
+{% endif %}
+  </div>
+</div>
 
 
 {% endblock %}
