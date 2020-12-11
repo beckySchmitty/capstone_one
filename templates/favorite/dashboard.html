@@ -11,10 +11,10 @@
         {% for state in favorites_state_data %}
 
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="https://images.squarespace-cdn.com/content/v1/5d26a468a301f700016748dd/1596537676551-BFF8VKQ66LQG5642GPV2/ke17ZwdGBToddI8pDm48kK03m88BlLEM2mUdZOkNgFIUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKcNd2h9X9ZGGeEeSyBQxtXQCom5bJX64g0TRud85m5BuwajXHjYom9sTe88Tg8VNZF/coronavirus-horizontal.jpg?format=2500w" alt="covid card image cap">
+          <div class="card-header"></div>
           <div class="card-body">
-            <h3 id="state-title" class="card-title">{{state.state}}</h3>
-            <!-- <p class="card-text">Random note </p> -->
+            <h3 id="state-title" class="card-title">{{state.full_st_name}}</h3>
+            <p class="card-text">{{state.nickname}}</p>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>New Cases:</strong> {{state.positiveIncrease}}</li>
@@ -23,9 +23,8 @@
             </li>
           </ul>
           <div class="card-body">
-            <!-- <a href="/favorite/dashboard" class="card-link"><strong>Favorites</strong></a> -->
             <a href="/resources" class="card-link"><strong>Resources</strong></a>
-            <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{date}}</em></small></p>
+            <p class="card-text mt-3"><small class="text-muted"><em>Last updated {{state.date}}</em></small></p>
             </div>
         </div>
         {% endfor %}

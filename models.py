@@ -84,6 +84,8 @@ class Address(db.Model):
     state_name = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
     zip_code = db.Column(db.Integer, nullable=False)
     favorite = db.Column(db.Boolean, nullable=False, default=False)
+    nickname = db.Column(db.Text)
+
 
 
 class User_Addresses(db.Model):
@@ -92,7 +94,4 @@ class User_Addresses(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'), primary_key=True)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id', ondelete='cascade'), primary_key=True)
-    note = db.Column(db.Text)
 
-
-# [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]

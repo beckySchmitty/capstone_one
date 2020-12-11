@@ -40,3 +40,5 @@ class addFavoriteForm(FlaskForm):
     state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
     zip_code = FloatField('Zip Code', validators=[DataRequired()])
     favorite = BooleanField('Add to favorites?', default="checked", validators=[DataRequired()] )
+    nickname = StringField('Nickname (Ex. Dad"s house)', validators=[DataRequired()])
+

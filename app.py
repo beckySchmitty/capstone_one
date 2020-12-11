@@ -167,13 +167,7 @@ def show_home_dashboard():
 
     data = get_state_data(curr_user.homestate)
 
-    try:
-        date = get_formatted_date(data["date"])
-    except (KeyError):
-        date = "date not availble"
-        send_myself_err_email("KeyError")
-
-    return render_template('/user/dashboard.html', user=curr_user, data=data, date=date)
+    return render_template('/user/dashboard.html', user=curr_user, data=data)
 
 @app.route('/user/edit', methods=["GET", "POST"])
 def handle_edit_user():
@@ -232,6 +226,8 @@ def handle_add_favorite_form():
                 state_name = form.state_name.data,
                 zip_code = form.zip_code.data,
                 favorite = form.favorite.data,
+                nickname=form.nickname.data
+
             )
 
             db.session.add(new_fav)
@@ -268,7 +264,7 @@ def show_favorites_dashboard():
 
     # favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
 
-    favorites_for_api = [address.state_name for address in favorites if address.state_name != curr_user.homestate]
+    favorites_for_api = [address for address in favorites if address.state_name != curr_user.homestate]
     favorites_state_data = get_multi_state_data(favorites_for_api)
     return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
 

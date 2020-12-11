@@ -3,37 +3,13 @@ $(function() {
 });
 
 
-// // WELCOME
-// let $welcomePage = $("#welcome")
-
-// if ($welcomePage) {
-//   $("body").css("background-color", "#651e3e");
-
-// }
-
-// if ($welcomePage) {
-//   $("body").css("background-color", "white");
-
-// }
+// ALERT FLASHER
+$(document).ready(function() {
+  setTimeout(function() {
+      $('.alert').fadeOut('slow');
+  }, 2000);
 
 
-// BUTTONS
-// $( "#us-daily-btn" ).click(function() {
-//     $( "#current-hospital-graph" ).hide();
-//     $( "#death-daily-graph" ).hide();
-//     $( "#us-daily-graph" ).show();
-//   });
 
-// $( "#current-hospital-btn" ).click(function() {
-//         $( "#us-daily-graph" ).hide();
-//         $( "#death-daily-graph" ).hide();
-//         $( "#current-hospital-graph" ).show();
-//   });  
-
-//   $( "#death-daily-btn" ).click(function() {
-//     $( "#us-daily-graph" ).hide();
-//     $( "#current-hospital-graph" ).hide();
-//     $( "#death-daily-graph" ).show();
-// });  
-
-
+  // add pop up for demo 
+  // add notificaiton about when data is updated 
