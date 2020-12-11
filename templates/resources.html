@@ -3,21 +3,58 @@
 {% block content %}
 
 <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="resource-pg">
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank" 
+        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        <h4>CDC Home</h4>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="resource-pg">
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html" target="_blank" 
+        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        <h4>Learn more about testing</h4>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="resource-pg">
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" target="_blank" 
+        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        <h4>Check Symptoms </h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="resource-pg">
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" target="_blank" 
+        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        <h4>Vaccine News</h4>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="resource-pg">
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html" target="_blank" 
+        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        <h4>What to do if you're sick</h4>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+<div class="container">
     <div class="row">
       <div class="col">
-        <img class="responsive-welcome" src=https://images.unsplash.com/photo-1588852732799-de793c9c63a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"" alt="art saying stop the spread of disinformation">      </div>
-      <div class="col">
-        <h1>CDC Resources</h1>
-        <a class="btn btn-custom-r1 m-3" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank" 
-        rel="noopener noreferrer" style="display: block">CDC COVID-19 Home</a> 
-        <a class="btn btn-custom-r2 m-3" href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html"target="_blank" 
-        rel="noopener noreferrer" style="display: block">Testing</a>      
-        <a class="btn btn-custom-r3 m-3" href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html"target="_blank" 
-        rel="noopener noreferrer" style="display: block">Symptoms</a>    
-        <a class="btn btn-custom-r4 m-3" href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html"target="_blank" 
-        rel="noopener noreferrer" style="display: block">Vaccines</a>     
-        <a class="btn btn-custom-r5 m-3" href="https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html"target="_blank" 
-        rel="noopener noreferrer" style="display: block">What to do if you're sick</a>   
+  
       <hr>
       <h2>Want these resources in an email?</h2> 
       <form action="/email/{{user.email}}" method="GET" >
@@ -26,36 +63,7 @@
     </div>
 
     </div>
-    <!-- <div class="row">
-      <div class="col">
-        1 of 4
-      </div>
-      <div class="col">
-        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
-        rel="noopener noreferrer">CDC COVID-19 Home</a>    
-        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
-        rel="noopener noreferrer">CDC COVID-19 Home</a>   
-        </div>
-      <div class="col">
-        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
-        rel="noopener noreferrer">CDC COVID-19 Home</a>    
-        <a class="btn btn-info" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"target="_blank" 
-        rel="noopener noreferrer">CDC COVID-19 Home</a>        
-        </div>
-      <div class="col">
-        4 of 4
-      </div>
-    </div> -->
-    <!-- <hr>
-    <div class="row">
-        <div class="col">
-        <h3>Want these resources in an email?</h3> 
-        <form action="/email/{{user.email}}" method="GET" >
-            <button class="btn btn-warning" type="submit">Email ME</button>
-        </form>       
-        </div>
-    </div> -->
-    
+
 
 
   </div>

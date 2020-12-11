@@ -107,8 +107,10 @@ def get_multi_state_data(user_favorites):
     for fav in user_favorites:
         resp = requests.get(f"{BASE_URL}/states/{fav}/current.json")
         state_data = resp.json()
+        # QUESTION: Why isn't this working?
+        # state_data = add_commas(state_data, ['positiveIncrease', 'totalTestResultsIncrease', 'positive', 'hospitalizedCurrently', 'inIcuCurrently', 'onVentilatorCurrently', 'deathIncrease', 'death', 'recovered'])
         multi_states_data.append(state_data)
-
+ 
 # adding ability to change abr to full name
         # for state in multi_states_data:
         #     state['full_st_name'] = us_states_dict[state]           
