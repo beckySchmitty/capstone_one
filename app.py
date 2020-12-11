@@ -94,13 +94,13 @@ def show_resources():
 @app.route("/email/<user_email>")
 def send_email(user_email):
 
-    msg = Message("Hello from my laptop",
+    msg = Message("COVID-19 Resources (myCOVIDNumber)",
                   sender="beckySchmittyDev@gmail.com",
                   recipients=[user_email])
 
-    msg.body = "Testing testing 1 2 3"
-    msg.html = "<b>Testing testing 1 2 3</b>"
-
+    msg.body = "CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+    msg.html = "<p>CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html</p><p>Learn more about testing: https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html</p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
+    
     mail.send(msg)
     flash('Email sent, check your inbox', 'success')
     return redirect('/dashboard')
@@ -286,5 +286,3 @@ def add_header(req):
 
 
 
-# NOTES TO SELF
-# Search UPDATE_LATER for changes I plan to make when I have more time in the future
