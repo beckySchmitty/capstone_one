@@ -1,7 +1,6 @@
 import requests
 from datetime import datetime
 
-
 BASE_URL = 'https://api.covidtracking.com/v1/'
 
 #***************************************************************************************** API HELPERS

@@ -32,7 +32,7 @@ class editUserForm(FlaskForm):
     homestate = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
 
 
-class addFavoriteForm(FlaskForm):
+class FavoriteForm(FlaskForm):
     """form for users to add favorites"""
 
     address_line1 = StringField('Address Line 1', validators=[DataRequired()])
@@ -40,5 +40,5 @@ class addFavoriteForm(FlaskForm):
     state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
     zip_code = FloatField('Zip Code', validators=[DataRequired()])
     favorite = BooleanField('Add to favorites?', default="checked", validators=[DataRequired()] )
-    nickname = StringField('Nickname (Ex. Dad"s house)', validators=[DataRequired()])
+    nickname = StringField('Nickname', validators=[DataRequired()])
 

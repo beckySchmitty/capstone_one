@@ -84,7 +84,7 @@ class Address(db.Model):
     state_name = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
     zip_code = db.Column(db.Integer, nullable=False)
     favorite = db.Column(db.Boolean, nullable=False, default=False)
-    nickname = db.Column(db.Text)
+    nickname = db.Column(db.Text, nullable=False,)
 
 
 

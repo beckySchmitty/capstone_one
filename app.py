@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, State, User, Address, User_Addresses
-from forms import userLoginForm, userSignUpForm, addFavoriteForm, editUserForm
+from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date
 from extra import my_password, MY_SECRET_KEY
@@ -204,8 +204,27 @@ def handle_user_logout():
   
 
 # ******************************************************************** FAVORITE ROUTES
-@app.route('/favorite/add', methods=["GET", "POST"])
-def handle_add_favorite_form():
+
+@app.route('/favorite/dashboard')
+def show_favorites_dashboard():
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    favorites = User.get_favs(curr_user)
+
+    # favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
+
+    favorites_for_api = [address for address in favorites if address.state_name != curr_user.homestate]
+    favorites_state_data = get_multi_state_data(favorites_for_api)
+    return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
+
+
+@app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
+def handle_add_favorite_form(nickname):
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
@@ -214,7 +233,43 @@ def handle_add_favorite_form():
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")
 
-    form = addFavoriteForm()
+    address = Address.query.filter_by(nickname=f"{nickname}").one()
+    form = FavoriteForm(obj=address)
+
+    if form.validate_on_submit():
+
+        try: 
+            address.user_id = curr_user.id
+            address.address_line1 = form.address_line1.data
+            address.address_line2 = form.address_line2.data or None
+            address.state_name = form.state_name.data
+            address.zip_code = form.zip_code.data
+            address.favorite = form.favorite.data
+            address.nickname=form.nickname.data
+
+            db.session.commit()
+
+        except IntegrityError:
+            flash('Error, try again', 'danger')
+            return render_template('/favorite/edit.html', form=form)
+        
+        flash('Successfully added new favorite', 'success')
+        return redirect('/favorite/dashboard')
+
+
+    return render_template('/favorite/edit.html', form=form, nickname=nickname)
+
+@app.route('/favorite/edit', methods=["GET", "POST"])
+def handle_edit_favorite_form():
+
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    form = FavoriteForm()
 
     if form.validate_on_submit():
 
@@ -251,24 +306,11 @@ def handle_add_favorite_form():
     return render_template('/favorite/add_favorite.html', form=form)
 
 
-@app.route('/favorite/dashboard')
-def show_favorites_dashboard():
-    curr_user = User.query.get(session[CURR_USER_KEY])
-    session_user = find_user()
-
-    if (session_user is None):
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
-
-    favorites = User.get_favs(curr_user)
-
-    # favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
-
-    favorites_for_api = [address for address in favorites if address.state_name != curr_user.homestate]
-    favorites_state_data = get_multi_state_data(favorites_for_api)
-    return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
 
 
+
+
+# ******************************************************************** After
 
 @app.after_request
 def add_header(req):
