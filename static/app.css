@@ -88,6 +88,10 @@ h3 {
 
 }
 
+h4 {
+    color: #851e3e;
+}
+
 h6 {
     color:#051e3e;
 }
@@ -119,17 +123,21 @@ h6 {
 
 /* ************************************** Resources*/
 .icon-r {
-    color: #651e3e;
+    color: #051e3e;
 }
 
 .icon-r:hover {
-    color:#708090;
+    color:#575757;
 }
 
 .resource-pg {
     text-align: center;
 }
 
+.btn-resources {
+    background-color: #051e3e;
+    color: white;
+}
 
 /* ************************************** Footer */
 
