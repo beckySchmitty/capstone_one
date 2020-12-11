@@ -120,6 +120,10 @@ h6 {
     background-color: #36454f;
 }
 
+/* th {
+    color: #708090;
+} */
+
 
 /* ************************************** Resources*/
 .icon-r {
@@ -140,6 +144,21 @@ h6 {
 }
 
 /* ************************************** Footer */
+
+.table-custom-1 {
+    background-color: #6e7f80;
+    color: white;
+
+}
+
+th {
+    color: white;
+}
+
+
+
+/* ************************************** Footer */
+
 
 .footer {
     position: absolute;

@@ -8,6 +8,54 @@
   <div class="row">
     <h1>{{data.full_st_name}}</h1>
   </div>
+  <table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">STATE</th>
+        <th scope="col">Entire US</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>New: {{data.positiveIncrease}}</td>
+        <td>X</td>
+      </tr>
+      <tr>
+        <td>Increase: {{data.totalTestResultsIncrease}}</td>
+        <td>X</td>
+      </tr>
+      <tr>
+        <td>Total Reported: {{data.positive}}</td>
+        <td>X</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <table class="table  table-hover table-sm table-custom-1">
+    <thead>
+      <tr>
+        <th colspan="3">Hospitalizations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>New Cases: </td>
+        <td>{{data.positiveIncrease}}</td>
+      </tr>
+      <tr>
+        <td>Increase in Cases: {{data.totalTestResultsIncrease}}</td>
+      </tr>
+      <tr>
+        <td>Total Reported Cases: {{data.positive}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+
   
     <div class="row">
         <div class="card-columns">
