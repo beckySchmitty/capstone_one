@@ -40,18 +40,6 @@ connect_db(app)
 CURR_USER_KEY = "current_user"
 
 
-def send_myself_err_email(error):
-    """Email myself errors. Created in anticipation of API changes or other edge cases"""
-
-    msg = Message("ERROR: Capstone Project",
-                  sender="beckySchmittyDev@gmail.com",
-                  recipients=["becky.schmitthenner@gmail.com"])
-
-    msg.body = f"{error}"
-    msg.html = f"{error}"
-
-    mail.send(msg)
-
 
 # Funcs to find and authenticate user via flask session
 def find_user():
@@ -197,42 +185,6 @@ def show_favorites_dashboard():
     return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
 
 
-@app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
-def handle_add_favorite_form(nickname):
-
-    curr_user = User.query.get(session[CURR_USER_KEY])
-    session_user = find_user()
-
-    if (session_user is None):
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
-
-    address = Address.query.filter_by(nickname=f"{nickname}").one()
-    form = FavoriteForm(obj=address)
-
-    if form.validate_on_submit():
-
-        try: 
-            address.user_id = curr_user.id
-            address.address_line1 = form.address_line1.data
-            address.address_line2 = form.address_line2.data or None
-            address.state_name = form.state_name.data
-            address.zip_code = form.zip_code.data
-            address.favorite = form.favorite.data
-            address.nickname=form.nickname.data
-
-            db.session.commit()
-
-        except IntegrityError:
-            flash('Error, try again', 'danger')
-            return render_template('/favorite/edit.html', form=form)
-        
-        flash('Successfully added new favorite', 'success')
-        return redirect('/favorite/dashboard')
-
-
-    return render_template('/favorite/edit.html', form=form, nickname=nickname)
-
 @app.route('/favorite/add', methods=["GET", "POST"])
 def handle_edit_favorite_form():
 
@@ -280,6 +232,58 @@ def handle_edit_favorite_form():
     return render_template('/favorite/add_favorite.html', form=form)
 
 
+@app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
+def handle_add_favorite_form(nickname):
+
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    address = Address.query.filter_by(nickname=f"{nickname}").one()
+    form = FavoriteForm(obj=address)
+
+    if form.validate_on_submit():
+
+        try: 
+            address.user_id = curr_user.id
+            address.address_line1 = form.address_line1.data
+            address.address_line2 = form.address_line2.data or None
+            address.state_name = form.state_name.data
+            address.zip_code = form.zip_code.data
+            address.favorite = form.favorite.data
+            address.nickname=form.nickname.data
+
+            db.session.commit()
+
+        except IntegrityError:
+            flash('Error, try again', 'danger')
+            return render_template('/favorite/edit.html', form=form)
+        
+        flash('Successfully added new favorite', 'success')
+        return redirect('/favorite/dashboard')
+
+
+    return render_template('/favorite/edit.html', form=form, nickname=nickname)
+
+@app.route('/favorite/delete/<nickname>')
+def delete_favorite(nickname):
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    address = Address.query.filter_by(nickname=f"{nickname}").one()
+    db.session.delete(address)
+    db.session.commit()        
+
+    flash(f'{address.nickname} deleted', 'success')
+    return redirect('/favorite/dashboard')
+
 
 # ************************************************************************* Resources
 
@@ -311,6 +315,22 @@ def send_email(user_email):
     flash('Email sent, check your inbox', 'success')
     return redirect('/dashboard')
 
+
+
+# ******************************************************************** Email Func
+
+
+def send_myself_err_email(error):
+    """Email myself errors. Created in anticipation of API changes or other edge cases"""
+
+    msg = Message("ERROR: Capstone Project",
+                  sender="beckySchmittyDev@gmail.com",
+                  recipients=["becky.schmitthenner@gmail.com"])
+
+    msg.body = f"{error}"
+    msg.html = f"{error}"
+
+    mail.send(msg)
 
 
 # ******************************************************************** After

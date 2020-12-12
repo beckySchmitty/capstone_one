@@ -16,13 +16,6 @@ for state in states:
 db.session.commit()
 
 
-# s1 = State(name="oh")
-# s2 = State(name="ca")
-# s3 = State(name="ny")
-# s4 = State(name="nc")
-# db.session.add_all([s1, s2, s3, s4])
-# db.session.commit()
-
 # Add Users
 u1 = User.signUp(username="BoJack_Horseman", email="fakeemail@gmail.com", password="password", homestate="ca")
 u2 = User.signUp(username="Taylor_Swift", email="fake2@gmail.com", password="password", homestate="ny")
