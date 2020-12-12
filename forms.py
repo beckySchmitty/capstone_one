@@ -14,7 +14,7 @@ class userSignUpForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired()])
     address_line1 = StringField('Address Line 1', validators=[DataRequired()])
     address_line2 = StringField('Address Line 2', validators=[Optional()])
-    state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    state_name = SelectField('State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
     zip_code = FloatField('Zip Code', validators=[DataRequired()])
 
 class userLoginForm(FlaskForm):
@@ -26,8 +26,8 @@ class userLoginForm(FlaskForm):
 class editUserForm(FlaskForm):
     """form to edit user"""
 
-    email = StringField('E-mail', validators=[DataRequired()])
-    homestate = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    email = StringField('E-mail', validators=[Optional()])
+    username = StringField('Username', validators=[Optional()])
 
 
 class FavoriteForm(FlaskForm):
@@ -37,6 +37,11 @@ class FavoriteForm(FlaskForm):
     address_line2 = StringField('Address Line 2', validators=[Optional()])
     state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
     zip_code = FloatField('Zip Code', validators=[DataRequired()])
-    favorite = BooleanField('Add to favorites?', default="checked", validators=[DataRequired()] )
     nickname = StringField('Nickname', validators=[DataRequired()])
 
+class editHomeStateForm(FlaskForm):
+    """Edit Homestate"""
+    address_line1 = StringField('Address Line 1', validators=[DataRequired()])
+    address_line2 = StringField('Address Line 2', validators=[Optional()])
+    state_name = SelectField('State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    zip_code = FloatField('Zip Code', validators=[DataRequired()])

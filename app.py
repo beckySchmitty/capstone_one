@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, State, User, Address, User_Addresses
-from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm
+from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, editHomeStateForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date
 from extra import my_password, MY_SECRET_KEY
@@ -62,7 +62,7 @@ def logout_user():
 
 @app.route('/')
 def welcome():
-    """shows homepage for all anon users"""
+    """shows homepage for all users"""
     user = find_user()
     return render_template('welcome.html', user=user)
 
@@ -72,6 +72,8 @@ def welcome():
 
 @app.route('/signup', methods=["GET", "POST"])
 def handle_signup():
+    """Creates user account, saves homestate address
+    See @classmethod SignUp on user model"""
 
     form = userSignUpForm()
 
@@ -100,6 +102,7 @@ def handle_signup():
 
 @app.route('/login', methods=["GET", "POST"])
 def user_login_route():
+    """Checks for user authentication, logs in user"""
     form = userLoginForm()
 
     if form.validate_on_submit():
@@ -121,7 +124,7 @@ def user_login_route():
 
 @app.route('/dashboard')
 def show_home_dashboard():
-    """shows dashboard with homestate information"""
+    """shows main 'Home' page with homestate information"""
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
@@ -136,6 +139,7 @@ def show_home_dashboard():
 
 @app.route('/user/edit', methods=["GET", "POST"])
 def handle_edit_user():
+    """Update user email and/or username"""
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
@@ -147,17 +151,42 @@ def handle_edit_user():
         return redirect("/")
 
     if form.validate_on_submit():
-        email = form.email.data
-        homestate = form.homestate.data 
-
-        curr_user.email = email
-        curr_user.homestate = homestate
+        curr_user.email = form.email.data
+        curr_user.username = form.username.data
         db.session.commit()
 
         flash('Account successfully updated', 'success')
         return redirect('/dashboard')
 
     return render_template('/user/edit.html', form=form, user=curr_user)
+
+@app.route('/homestate/edit', methods=["GET", "POST"])
+def handle_homestate_edit():
+    """Edit homestate address and update user.homestate"""
+
+    curr_user = User.query.get(session[CURR_USER_KEY])
+    session_user = find_user()
+
+    address = Address.query.filter(Address.user_id == curr_user.id, Address.nickname == "homestate").one_or_none()
+
+    form = editHomeStateForm(obj=address)
+
+    if (session_user is None):
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    if form.validate_on_submit():
+        address.address_line1 = form.address_line1.data,
+        address.address_line2 = form.address_line2.data,
+        address.state_name = form.state_name.data,
+        address.zip_code = form.zip_code.data
+        curr_user.homestate = form.state_name.data
+        db.session.commit()
+
+        flash('Homestate address successfully updated', 'success')
+        return redirect('/dashboard')
+
+    return render_template('/user/edit_homestate.html', form=form, user=curr_user)
 
 
 @app.route('/logout')
@@ -172,6 +201,9 @@ def handle_user_logout():
 
 @app.route('/favorite/dashboard')
 def show_favorites_dashboard():
+    """Render 'Favorites' aka dashboard showing user favorites
+    Shows Add Favorite form if none added to account"""
+
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
 
@@ -180,16 +212,16 @@ def show_favorites_dashboard():
         return redirect("/")
 
     favorites = User.get_favs(curr_user)
-
-    # favorites_for_api = [address.state_name for address in curr_user.addresses if address.state_name != curr_user.homestate]
-
     favorites_for_api = [address for address in favorites if address.state_name != curr_user.homestate]
+    # see route_helpers.py
     favorites_state_data = get_multi_state_data(favorites_for_api)
+
     return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
 
 
 @app.route('/favorite/add', methods=["GET", "POST"])
-def handle_edit_favorite_form():
+def handle_add_favorite_form():
+    """Show add favorite form, handle form, return to dashboard"""
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
@@ -209,11 +241,9 @@ def handle_edit_favorite_form():
                 address_line2 = form.address_line2.data or None,
                 state_name = form.state_name.data,
                 zip_code = form.zip_code.data,
-                favorite = form.favorite.data,
+                favorite = True,
                 nickname=form.nickname.data
-
             )
-
             db.session.add(new_fav)
             db.session.commit()
 
@@ -236,7 +266,8 @@ def handle_edit_favorite_form():
 
 
 @app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
-def handle_add_favorite_form(nickname):
+def handle_edit_favorite_form(nickname):
+    """Show edit favorite form, handle form, return to dashboard"""
 
     curr_user = User.query.get(session[CURR_USER_KEY])
     session_user = find_user()
@@ -256,7 +287,7 @@ def handle_add_favorite_form(nickname):
             address.address_line2 = form.address_line2.data or None
             address.state_name = form.state_name.data
             address.zip_code = form.zip_code.data
-            address.favorite = form.favorite.data
+            address.favorite = True
             address.nickname=form.nickname.data
 
             db.session.commit()
@@ -347,6 +378,3 @@ def add_header(req):
     req.headers["Expires"] = "0"
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
-
-
-
