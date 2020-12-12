@@ -41,13 +41,27 @@ class User(db.Model):
                                 backref='users')
 
     @classmethod
-    def signUp(cls, username, email, password, homestate):
+    def signUp(cls, username, password, email, address_line1, address_line2, state_name, zip_code):
         """Signs up user by hashing password & adding to database"""
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-        new_user = User(username=username, email=email, password=hashed_pwd, homestate=homestate)
+        new_user = User(username=username, email=email, password=hashed_pwd, homestate=state_name)
         db.session.add(new_user)
+        db.session.commit()
+
+        # grab user id after saved to database and use when saving Address
+        user = cls.query.filter_by(username=username).first()
+        new_address = Address(user_id=user.id, address_line1=address_line1, address_line2=address_line2, state_name=state_name, zip_code=zip_code, favorite=False, nickname="homestate")
+        db.session.add(new_address)
+        db.session.commit()
+
+        # grab address id and save to User_Addresses
+        address = Address.query.filter_by(nickname="homestate").first()
+        ua = User_Addresses(user_id=user.id, address_id=address.id)
+        db.session.add(ua)
+        db.session.commit()
+
         return new_user
 
 
@@ -86,7 +100,7 @@ class Address(db.Model):
     state_name = db.Column(db.Text, db.ForeignKey('states.name', ondelete='cascade'))
     zip_code = db.Column(db.Integer, nullable=False)
     favorite = db.Column(db.Boolean, nullable=False, default=False)
-    nickname = db.Column(db.Text, nullable=False,)
+    nickname = db.Column(db.Text, nullable=False)
 
 
 

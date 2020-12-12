@@ -79,9 +79,12 @@ def handle_signup():
         try:
             new_user = User.signUp(
                 username = form.username.data,
-                email = form.email.data,
                 password = form.password.data,
-                homestate = form.homestate.data
+                email = form.email.data,
+                address_line1 = form.address_line1.data,
+                address_line2 = form.address_line2.data,
+                state_name = form.state_name,
+                zip_code = form.zip_code.data
             )
             db.session.commit()
 
@@ -312,7 +315,7 @@ def send_email(user_email):
     msg.html = "<p><a href='https://www.cdc.gov/coronavirus/2019-ncov/index.html'>CDC Home</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html'>Learn More About Testing</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>Check Your Symptoms</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html'>Learn About Vaccines</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html'>What To Do If You're Sick</a></p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
     
     mail.send(msg)
-    flash('Email sent, check your inbox', 'success')
+    flash(f"Email sent, check your {user_email} inbox", 'success')
     return redirect('/dashboard')
 
 

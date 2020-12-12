@@ -164,6 +164,11 @@ table th {
     color: white;
 }
 
+.btn-resources:hover {
+    color: white;
+    background-color: #451e3e;
+}
+
 /* ************************************** Favorites */
 
 #fav-plus {

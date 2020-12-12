@@ -10,14 +10,12 @@ class userSignUpForm(FlaskForm):
     """Form to sign up user"""
 
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6), DataRequired()])
-    # NOTE_TO_SELF: should I add this or leave it as is so less info to sign up?
-    # address_line1 = StringField('Address Line 1', validators=[DataRequired()])
-    # address_line2 = StringField('Address Line 2', validators=[Optional()])
-    # state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
-    # zip_code = FloatField('Zip Code', validators=[DataRequired()])
-    homestate = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    email = StringField('E-mail', validators=[DataRequired()])
+    address_line1 = StringField('Address Line 1', validators=[DataRequired()])
+    address_line2 = StringField('Address Line 2', validators=[Optional()])
+    state_name = SelectField('Home State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    zip_code = FloatField('Zip Code', validators=[DataRequired()])
 
 class userLoginForm(FlaskForm):
     """Form to login"""
