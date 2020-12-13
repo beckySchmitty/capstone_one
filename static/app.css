@@ -89,7 +89,7 @@ h3 {
 }
 
 h4 {
-    color: #851e3e;
+    color: #651e3e;
 }
 
 h6 {
@@ -120,11 +120,7 @@ h6 {
     background-color: #36454f;
 }
 
-.table-custom-1 {
-    background-color: #6e7f80;
-    color: white;
 
-}
 
 th {
     color: white;
@@ -134,20 +130,26 @@ table th {
     text-align: center; 
  }
 
+ .table-custom-1 {
+    background-color:#051e3e;
+    color: white;
+}
+
  #hosp-table {
      width: 50%;
-     justify-content: center;
+     background-color: #6e7f80;
+     color: white;
  }
 
  #death-table {
     width: 50%;
-    justify-content: center;
-    background-color: #451e3e;
+    background-color: #36454f;
+    color: white;
 
  }
 
  #homestate-edit {
-    color: #0f52ba;
+    color: #051e3e;
 
  }
 
@@ -165,21 +167,24 @@ table th {
 }
 
 .btn-resources {
-    background-color: #051e3e;
-    color: white;
+    color: #051e3e;
 }
 
-.btn-resources:hover {
-    color: white;
-    background-color: #451e3e;
+.btn-r-2 {
+    color:#451e3e
 }
+
 
 /* ************************************** Favorites */
 
 #fav-plus {
-    color: #0f52ba;
+    color: #051e3e;
 }
 
+.badge-custom {
+    background-color: #061D95;
+    color: white;
+}
 
 
 /* ************************************** Footer */
@@ -192,11 +197,14 @@ table th {
     line-height: 60px; 
     /* background-color: #051e3e; */
     background-color: #451e3e;
+    flex-shrink: 0;
+
   }
 
   .footer a {
       color: white;
   }
+
 
 
 

@@ -7,7 +7,7 @@
     <div class="col-sm">
       <div class="resource-pg m-4">
         <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank" 
-        rel="noopener noreferrer"><i class="fas fa-clinic-medical fa-7x icon-r" aria-hidden="true"></i></a>
+        rel="noopener noreferrer"><i class="fas fa-h-square fa-7x icon-r" aria-hidden="true"></i></a>
         <h4>CDC Home</h4>
       </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="col-sm">
       <div class="resource-pg m-4">
         <a href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" target="_blank" 
-        rel="noopener noreferrer"><i class="fas fa-stethoscope fa-7x icon-r" aria-hidden="true"></i></a>
+        rel="noopener noreferrer"><i class="fas fa-notes-medical fa-7x icon-r" aria-hidden="true"></i></a>
         <h4>Check Symptoms </h4>
       </div>
     </div>
@@ -51,11 +51,19 @@
       <div class="col">
   
       <hr>
+
       <h2>Would you like these resources in an email?</h2> 
-      <form action="/email/{{user.email}}" method="GET" >
+        <a class="btn btn-resources" href="/email/{{user.email}}"><i id="email-icon" class="fas fa-envelope fa-5x" aria-hidden="true"></i></a>
+
+      <!-- <h2>Would you like these resources in an email?</h2> 
+      <form action="/email/{{user.email}}" method="GET">
           <button class="btn btn-resources" type="submit">SEND</button>
-      </form> 
+      </form>  -->
+
     </div>
+
+
+
 
     </div>
 

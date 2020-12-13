@@ -10,12 +10,12 @@
   </div>
 
   <div class="row">
-    <p>(<small class="text-muted"><em>Last updated {{data.date}}</em></small>)</p>
+    <p><small class="text-muted"><em>Last updated {{data.date}}</em></small></p>
 
   </div>
 
   <div class="row">
-  <table class="table table-hover table-dark text-center">
+  <table class="table table-dark table-custom-1 text-center">
     <thead>
       <tr>
         <th colspan="3">CASES</th>
@@ -40,58 +40,56 @@
   </table>
 </div>
 
-
-<div class="row">
-  <div class="col">
-  <table id="hosp-table" class="table  table-hover table-sm table-custom-1 text-center">
-    <thead>
-      <tr>
-        <th colspan="3">Hospitalizations</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Currently hospitalized:</strong> {{data.hospitalizedCurrently}}</td>
-      </tr>
-      <tr>
-        <td><strong>Hospitalized Increase:</strong> {{data.hospitalizedIncrease}}</td>
-      </tr>
-      <tr>
-        <td><strong>Currently in ICU:</strong> {{data.inIcuCurrently}}</td>
-      </tr>
-      <tr>
-        <td><strong>Currently on ventilator:</strong> {{data.onVentilatorCurrently}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="col">
-  <table id="death-table" class="table  table-hover table-sm table-custom-1 text-center">
-    <thead>
-      <tr>
-        <th colspan="3">Deaths</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Death Increase: </strong> {{data.deathIncrease}}</td>
-      </tr>
-      <tr>
-        <td>Total Deaths:</strong> {{data.death}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-  </div> 
-
-
-
-
-
+<div class="row d-flex justify-content-around">
+    <div class="col">
+    <table id="hosp-table" class="table table-sm text-center">
+      <thead>
+        <tr>
+          <th colspan="3">Hospitalizations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Currently hospitalized: {{data.hospitalizedCurrently}}</td>
+        </tr>
+        <tr>
+          <td>Hospitalized Increase: {{data.hospitalizedIncrease}}</td>
+        </tr>
+        <tr>
+          <td>Currently in ICU: {{data.inIcuCurrently}}</td>
+        </tr>
+        <tr>
+          <td>Currently on ventilator: {{data.onVentilatorCurrently}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+  <div class="col">
+    <table id="death-table" class="table table-sm table-custom-1 text-center">
+      <thead>
+        <tr>
+          <th colspan="3">Deaths</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Death Increase: {{data.deathIncrease}}</td>
+        </tr>
+        <tr>
+          <td>Total Deaths: {{data.death}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div> 
+
+
+
+
+
+</div>
 
 
 {% endblock %}
