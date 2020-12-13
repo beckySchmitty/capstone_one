@@ -51,11 +51,12 @@ class AddressModelTestCase(TestCase):
         db.session.commit()
 
         self.user = User.query.filter_by(username="testuser").one()
-        user.id = 111
-        self.user_id = user.id
+        self.user.id = 111
+        self.user_id = self.user.id
+        db.session.commit()
 
         self.testaddress = Address(
-                user_id=user_id
+                user_id=self.user_id,
                 address_line1="First Street",
                 address_line2="Apt A",
                 state_name="ny",
@@ -67,9 +68,7 @@ class AddressModelTestCase(TestCase):
         self.testaddress.id = self.testaddress_id
         db.session.commit()
 
-
         self.client = app.test_client()
-
 
     def tearDown(self):
         resp = super().tearDown()
@@ -82,7 +81,7 @@ class AddressModelTestCase(TestCase):
         """Does basic model work?"""
 
         a = Address(
-                user_id=self.user_id
+                user_id=self.user_id,
                 address_line1="Rocket Drive",
                 address_line2="Apt R",
                 state_name="ca",
@@ -98,4 +97,4 @@ class AddressModelTestCase(TestCase):
         self.assertEqual(a.favorite, True)
         self.assertNotEqual(a.address_line1, "Rocket Drive")
 
-        self.assertIn("Rocket Drive",self.user.addresses[1].address_line1)
+        self.assertIn("Rocket Drive", self.user.addresses[1].address_line1)

@@ -294,7 +294,7 @@ def handle_edit_favorite_form(nickname):
             flash('Error, try again', 'danger')
             return render_template('/favorite/edit.html', form=form)
         
-        flash('Successfully added new favorite', 'success')
+        flash('Successfully updated favorite', 'success')
         return redirect('/favorite/dashboard')
 
 
