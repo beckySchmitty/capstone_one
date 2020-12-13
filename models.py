@@ -103,7 +103,6 @@ class Address(db.Model):
     nickname = db.Column(db.Text, nullable=False)
 
 
-
 class User_Addresses(db.Model):
     """link user and their  addresses"""
     __tablename__ = "user_addresses"

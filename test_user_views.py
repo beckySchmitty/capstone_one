@@ -1,13 +1,11 @@
 """User View tests."""
 
-# run these tests like:
-
 #    FLASK_ENV=production python -m unittest test_user_views.py
 
 import os
 from unittest import TestCase
 
-from models import db, connect_db, User, Address, User_Addresses
+from models import db, connect_db, State, User, Address, User_Addresses
 from bs4 import BeautifulSoup
 
 os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
@@ -42,17 +40,27 @@ class UserViewTestCase(TestCase):
         db.session.commit()
 
         # add test users
-        self.testuser = User.signUp(username="testuser",
-                                    email="firstemail@gmail.com",
-                                    password="password",
-                                    homestate="oh")
+        self.testuser = User.signUp(
+                username="testuser",
+                password="password",
+                email="test@test.com",
+                address_line1="123 Line One",
+                address_line2="456 Line Two",
+                state_name="oh",
+                zip_code="43212"
+        )
         self.testuser_id = 111
         self.testuser.id = self.testuser_id
 
-        self.testuser_two = User.signUp(username="testuser_two",
-                                    email="test2@test.com",
-                                    password="password",
-                                    homestate="ny")
+        self.testuser = User.signUp(
+                username="testusertwo",
+                password="password",
+                email="tes2t@test.com",
+                address_line1="123 Line One",
+                address_line2="456 Line Two",
+                state_name="ny",
+                zip_code="43212"
+        )
         self.testuser_two_id = 222
         self.testuser_two.id = self.testuser_two_id
 
@@ -108,6 +116,8 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertEqual("Ohio", str(resp.data))
+            self.assertEqual("Cases", str(resp.data))
+            self.assertEqual("Hospitalizations", str(resp.data))
             self.assertNotEqual("Invalid", str(resp.data))
 
     def show_user_edit_form(self):
@@ -119,6 +129,9 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertEqual("Update Your Account", str(resp.data))
+            self.assertEqual("Email", str(resp.data))
+            self.assertEqual("Username", str(resp.data))
+            self.assertNotEqual(404, str(resp.data))
             self.assertNotEqual("Invalid", str(resp.data))
 
     def handle_user_edit(self):
@@ -130,7 +143,7 @@ class UserViewTestCase(TestCase):
 
             resp = client.post('/user/edit', data=dict(
             email="newemail@gmail.com",
-            homestate="oh"
+            username="ca"
         ), follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)

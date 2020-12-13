@@ -66,8 +66,6 @@ def welcome():
     user = find_user()
     return render_template('welcome.html', user=user)
 
-
-
 # ******************************************************************** USER ROUTES
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -113,7 +111,7 @@ def user_login_route():
 
         if user:
             user_login(user)
-            flash("welcome back!", "success")
+            flash(f"Welcome back, {username}!", "success")
             return redirect('/dashboard')
         else:
             flash("Invalid password, try again", "danger")
