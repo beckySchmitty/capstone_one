@@ -42,41 +42,16 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 
 
-
-CURR_USER_KEY = "current_user"
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.get(user_id)
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
-# # Funcs to find and authenticate user via flask session
-# def find_user():
-
-#     if CURR_USER_KEY in session:
-#         found_user = User.query.get(session[CURR_USER_KEY])
-#         return found_user
-
-#     else:
-#         return None
-
-# def user_login(user):
-#     session[CURR_USER_KEY] = user.id
-
-# def logout_user():
-#     session[CURR_USER_KEY] = None
-
-
-# ******************************************************************** Welcome 
+# ********************************************************************** WELCOME 
 
 @app.route('/')
 def welcome():
     """shows homepage for all users"""
-    # user = find_user()
-    return render_template('welcome.html')
+    return render_template('welcome.html', user=current_user)
 
 # ******************************************************************** USER ROUTES
 
@@ -105,7 +80,6 @@ def handle_signup():
             return render_template('/user/signup.html', form=form)
 
         login_user(user)
-        # user_login(new_user)
 
         return redirect('/dashboard')
 
@@ -148,95 +122,50 @@ def show_home_dashboard():
     return render_template('/user/dashboard.html', user=current_user, data=data)
 
 
+@app.route('/user/edit', methods=["GET", "POST"])
+def handle_edit_user():
+    """Update user email and/or username"""
+
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
+
+    form = editUserForm(obj=current_user)
+
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+        db.session.commit()
+
+        flash('Account successfully updated', 'success')
+        return redirect('/dashboard')
+
+    return render_template('/user/edit.html', form=form, user=current_user)
 
 
-# @app.route('/login', methods=["GET", "POST"])
-# def user_login_route():
-#     """Checks for user authentication, logs in user"""
-#     form = userLoginForm()
+@app.route('/homestate/edit', methods=["GET", "POST"])
+def handle_homestate_edit():
+    """Edit homestate address and update user.homestate"""
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
-#     if form.validate_on_submit():
-#         username = form.username.data
-#         password = form.password.data
+    address = Address.query.filter(Address.user_id == current_user.id, Address.nickname == "homestate").one_or_none()
 
-#         user = User.authenticate(username, password)
+    form = editHomeStateForm(obj=address)
 
-#         if user:
-#             user_login(user)
-#             flash(f"Welcome back, {username}!", "success")
-#             return redirect('/dashboard')
-#         else:
-#             flash("Invalid password, try again", "danger")
+    if form.validate_on_submit():
+        address.address_line1 = form.address_line1.data,
+        address.address_line2 = form.address_line2.data,
+        address.state_name = form.state_name.data,
+        address.zip_code = form.zip_code.data
+        current_user.homestate = form.state_name.data
+        db.session.commit()
 
+        flash('Homestate address successfully updated', 'success')
+        return redirect('/dashboard')
 
-#     return render_template('/user/login.html', form=form)
-
-
-# @app.route('/dashboard')
-# def show_home_dashboard():
-#     """shows main 'Home' page with homestate information"""
-
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
-
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
-
-#     data = get_state_data(curr_user.homestate)
-
-#     return render_template('/user/dashboard.html', user=curr_user, data=data)
-
-# @app.route('/user/edit', methods=["GET", "POST"])
-# def handle_edit_user():
-#     """Update user email and/or username"""
-
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
-
-#     form = editUserForm(obj=curr_user)
-
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
-
-#     if form.validate_on_submit():
-#         curr_user.email = form.email.data
-#         curr_user.username = form.username.data
-#         db.session.commit()
-
-#         flash('Account successfully updated', 'success')
-#         return redirect('/dashboard')
-
-#     return render_template('/user/edit.html', form=form, user=curr_user)
-
-# @app.route('/homestate/edit', methods=["GET", "POST"])
-# def handle_homestate_edit():
-#     """Edit homestate address and update user.homestate"""
-
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
-
-#     address = Address.query.filter(Address.user_id == curr_user.id, Address.nickname == "homestate").one_or_none()
-
-#     form = editHomeStateForm(obj=address)
-
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
-
-#     if form.validate_on_submit():
-#         address.address_line1 = form.address_line1.data,
-#         address.address_line2 = form.address_line2.data,
-#         address.state_name = form.state_name.data,
-#         address.zip_code = form.zip_code.data
-#         curr_user.homestate = form.state_name.data
-#         db.session.commit()
-
-#         flash('Homestate address successfully updated', 'success')
-#         return redirect('/dashboard')
-
-#     return render_template('/user/edit_homestate.html', form=form, user=curr_user)
+    return render_template('/user/edit_homestate.html', form=form, user=current_user)
 
 
 @app.route('/logout')
@@ -246,175 +175,153 @@ def handle_user_logout():
     return redirect('/')
   
 
-# # ******************************************************************** FAVORITE ROUTES
+# ******************************************************************** FAVORITE ROUTES
 
-# @app.route('/favorite/dashboard')
-# def show_favorites_dashboard():
-#     """Render 'Favorites' aka dashboard showing user favorites
-#     Shows Add Favorite form if none added to account"""
+@app.route('/favorite/dashboard')
+def show_favorites_dashboard():
+    """Render 'Favorites' aka dashboard showing user favorites
+    Shows Add Favorite form if none added to account"""
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
+    favorites = User.get_favs(current_user)
+    favorites_for_api = [address for address in favorites if address.state_name != current_user.homestate]
+    # see route_helpers.py
+    favorites_state_data = get_multi_state_data(favorites_for_api)
 
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
-
-#     favorites = User.get_favs(curr_user)
-#     favorites_for_api = [address for address in favorites if address.state_name != curr_user.homestate]
-#     # see route_helpers.py
-#     favorites_state_data = get_multi_state_data(favorites_for_api)
-
-#     return render_template('/favorite/dashboard.html', user=curr_user, favorites_state_data=favorites_state_data)
+    return render_template('/favorite/dashboard.html', user=current_user, favorites_state_data=favorites_state_data)
 
 
-# @app.route('/favorite/add', methods=["GET", "POST"])
-# def handle_add_favorite_form():
-#     """Show add favorite form, handle form, return to dashboard"""
+@app.route('/favorite/add', methods=["GET", "POST"])
+def handle_add_favorite_form():
+    """Show add favorite form, handle form, return to dashboard"""
 
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
+    form = FavoriteForm()
 
-#     form = FavoriteForm()
+    if form.validate_on_submit():
 
-#     if form.validate_on_submit():
+        try: 
+            new_fav = Address(
+                user_id = current_user.id,
+                address_line1 = form.address_line1.data,
+                address_line2 = form.address_line2.data or None,
+                state_name = form.state_name.data,
+                zip_code = form.zip_code.data,
+                favorite = True,
+                nickname=form.nickname.data
+            )
+            db.session.add(new_fav)
+            db.session.commit()
 
-#         try: 
-#             new_fav = Address(
-#                 user_id = curr_user.id,
-#                 address_line1 = form.address_line1.data,
-#                 address_line2 = form.address_line2.data or None,
-#                 state_name = form.state_name.data,
-#                 zip_code = form.zip_code.data,
-#                 favorite = True,
-#                 nickname=form.nickname.data
-#             )
-#             db.session.add(new_fav)
-#             db.session.commit()
+            # get address id and add information to User_Addresses table
+            new_fav = Address.query.filter(Address.address_line1==form.address_line1.data).first()
 
-#             # get address id and add information to User_Addresses table
-#             new_fav = Address.query.filter(Address.address_line1==form.address_line1.data).first()
+            new_ua = User_Addresses(user_id=current_user.id, address_id=new_fav.id)
+            db.session.add(new_ua)
+            db.session.commit()
 
-#             new_ua = User_Addresses(user_id=curr_user.id, address_id=new_fav.id)
-#             db.session.add(new_ua)
-#             db.session.commit()
-
-#         except IntegrityError:
-#             flash('Error, try again', 'danger')
-#             return render_template('/favorite/add_favorite.html', form=form)
+        except IntegrityError:
+            flash('Error, try again', 'danger')
+            return render_template('/favorite/add_favorite.html', form=form)
         
-#         flash('Successfully added new favorite', 'success')
-#         return redirect('/favorite/dashboard')
+        flash('Successfully added new favorite', 'success')
+        return redirect('/favorite/dashboard')
 
 
-#     return render_template('/favorite/add_favorite.html', form=form)
+    return render_template('/favorite/add_favorite.html', form=form)
 
 
-# @app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
-# def handle_edit_favorite_form(nickname):
-#     """Show edit favorite form, handle form, return to dashboard"""
+@app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
+def handle_edit_favorite_form(nickname):
+    """Show edit favorite form, handle form, return to dashboard"""
 
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
+    address = Address.query.filter_by(nickname=f"{nickname}").one()
+    form = FavoriteForm(obj=address)
 
-#     address = Address.query.filter_by(nickname=f"{nickname}").one()
-#     form = FavoriteForm(obj=address)
+    if form.validate_on_submit():
 
-#     if form.validate_on_submit():
+        try: 
+            address.user_id = current_user.id
+            address.address_line1 = form.address_line1.data
+            address.address_line2 = form.address_line2.data or None
+            address.state_name = form.state_name.data
+            address.zip_code = form.zip_code.data
+            address.favorite = True
+            address.nickname=form.nickname.data
 
-#         try: 
-#             address.user_id = curr_user.id
-#             address.address_line1 = form.address_line1.data
-#             address.address_line2 = form.address_line2.data or None
-#             address.state_name = form.state_name.data
-#             address.zip_code = form.zip_code.data
-#             address.favorite = True
-#             address.nickname=form.nickname.data
+            db.session.commit()
 
-#             db.session.commit()
-
-#         except IntegrityError:
-#             flash('Error, try again', 'danger')
-#             return render_template('/favorite/edit.html', form=form)
+        except IntegrityError:
+            flash('Error, try again', 'danger')
+            return render_template('/favorite/edit.html', form=form)
         
-#         flash('Successfully updated favorite', 'success')
-#         return redirect('/favorite/dashboard')
+        flash(f"Successfully updated {address.nickname}", "success")
+        return redirect('/favorite/dashboard')
 
+    return render_template('/favorite/edit.html', form=form, nickname=nickname)
 
-#     return render_template('/favorite/edit.html', form=form, nickname=nickname)
+@app.route('/favorite/delete/<nickname>')
+def delete_favorite(nickname):
+    """Delete fav & redirect to favorites"""
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
-# @app.route('/favorite/delete/<nickname>')
-# def delete_favorite(nickname):
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
+    address = Address.query.filter_by(nickname=f"{nickname}").one()
+    db.session.delete(address)
+    db.session.commit()        
 
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
+    flash(f'{address.nickname} deleted', 'success')
+    return redirect('/favorite/dashboard')
 
-#     address = Address.query.filter_by(nickname=f"{nickname}").one()
-#     db.session.delete(address)
-#     db.session.commit()        
+# ************************************************************************* Resources
 
-#     flash(f'{address.nickname} deleted', 'success')
-#     return redirect('/favorite/dashboard')
+@app.route('/resources')
+def show_resources():
+    """shows resource page with email ability"""
+    if not current_user.is_authenticated:
+        flash("Unauthorized access. Please sign up or login", "danger")
+        return redirect("/")
 
+    return render_template('resources.html', user=current_user)
 
-# # ************************************************************************* Resources
+@app.route("/email/<user_email>")
+def send_email(user_email):
 
+    msg = Message("COVID-19 Resources (myCOVIDNumber)",
+                  sender="beckySchmittyDev@gmail.com",
+                  recipients=[user_email])
 
-# @app.route('/resources')
-# def show_resources():
-#     """shows resource page with email ability"""
-#     curr_user = User.query.get(session[CURR_USER_KEY])
-#     session_user = find_user()
-
-#     if (session_user is None):
-#         flash("Unauthorized access. Please sign up or login", "danger")
-#         return redirect("/")
-
-
-#     return render_template('resources.html', user=curr_user)
-
-# @app.route("/email/<user_email>")
-# def send_email(user_email):
-
-#     msg = Message("COVID-19 Resources (myCOVIDNumber)",
-#                   sender="beckySchmittyDev@gmail.com",
-#                   recipients=[user_email])
-
-#     msg.body = "CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html"
-#     msg.html = "<p><a href='https://www.cdc.gov/coronavirus/2019-ncov/index.html'>CDC Home</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html'>Learn More About Testing</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>Check Your Symptoms</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html'>Learn About Vaccines</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html'>What To Do If You're Sick</a></p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
+    msg.body = "CDC Home: https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+    msg.html = "<p><a href='https://www.cdc.gov/coronavirus/2019-ncov/index.html'>CDC Home</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html'>Learn More About Testing</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html'>Check Your Symptoms</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html'>Learn About Vaccines</a></p><p><a href='https://www.cdc.gov/coronavirus/2019-ncov/if-you-are-sick/steps-when-sick.html'>What To Do If You're Sick</a></p><hr><p class='text-muted'>Data Source <a href='https://covidtracking.com/'>The COVID Tracking Project</a> | <a href='https://github.com/beckySchmitty'>beckySchmitty Github</a></p>"
     
-#     mail.send(msg)
-#     flash(f"Email sent, check your {user_email} inbox", 'success')
-#     return redirect('/dashboard')
+    mail.send(msg)
+    flash(f"Check your inbox, {user_email}", 'success')
+    return redirect('/dashboard')
 
 
+# ******************************************************************** Email Func
 
-# # ******************************************************************** Email Func
+def send_myself_err_email(error):
+    """Email myself errors. Created in anticipation of API changes or other edge cases"""
 
+    msg = Message("ERROR: Capstone Project",
+                  sender="beckySchmittyDev@gmail.com",
+                  recipients=["becky.schmitthenner@gmail.com"])
 
-# def send_myself_err_email(error):
-#     """Email myself errors. Created in anticipation of API changes or other edge cases"""
+    msg.body = f"{error}"
+    msg.html = f"{error}"
 
-#     msg = Message("ERROR: Capstone Project",
-#                   sender="beckySchmittyDev@gmail.com",
-#                   recipients=["becky.schmitthenner@gmail.com"])
-
-#     msg.body = f"{error}"
-#     msg.html = f"{error}"
-
-#     mail.send(msg)
-
+    mail.send(msg)
 
 # ******************************************************************** After
 
