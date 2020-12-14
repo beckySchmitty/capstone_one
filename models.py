@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from flask_login import UserMixin
+
 
 db = SQLAlchemy()
 
@@ -22,7 +24,7 @@ class State(db.Model):
     name = db.Column(db.Text, unique=True)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User model"""
 
     __tablename__ = "users"
@@ -109,4 +111,3 @@ class User_Addresses(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'), primary_key=True)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id', ondelete='cascade'), primary_key=True)
-
