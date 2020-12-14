@@ -36,10 +36,7 @@ connect_db(app)
 
 # db.create_all()
 
-
 CURR_USER_KEY = "current_user"
-
-
 
 # Funcs to find and authenticate user via flask session
 def find_user():
