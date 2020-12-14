@@ -196,13 +196,13 @@ table th {
 
 
 .footer {
-    position: sticky;
+    position: absolute;
     bottom: 0;
     width: 100vw;
     height: 60px;
     line-height: 60px; 
     background-color: #451e3e;
-    flex-shrink: 0;
+    /* flex-shrink: 0; */
 
   }
 

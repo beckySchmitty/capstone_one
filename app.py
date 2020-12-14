@@ -51,7 +51,12 @@ def load_user(id):
 @app.route('/')
 def welcome():
     """shows homepage for all users"""
-    return render_template('welcome.html', user=current_user)
+    if current_user.is_authenticated:
+        user = current_user
+    else:
+        user = None
+
+    return render_template('welcome.html', user=user)
 
 # ******************************************************************** USER ROUTES
 
@@ -80,10 +85,36 @@ def handle_signup():
             return render_template('/user/signup.html', form=form)
 
         login_user(user)
-
         return redirect('/dashboard')
 
     return render_template('/user/signup.html', form=form)
+
+
+# @app.route('/login', methods=["GET", "POST"])
+# def user_login_route():
+#     """Checks for user authentication, logs in user"""
+
+#     if current_user.is_authenticated:
+#         return redirect('/dashboard')
+
+#     form = userLoginForm()
+
+#     if form.validate_on_submit():
+#         try:
+#             username = form.username.data
+#             password = form.password.data
+
+#             user = User.authenticate(username, password)
+#         except
+
+#         login_user(user)
+
+#         flash(f"Welcome back, {username}!", "success")
+#         return redirect('/dashboard')
+#     else:
+#         flash("Invalid password, try again", "danger")
+
+#     return render_template('/user/login.html', form=form)
 
 @app.route('/login', methods=["GET", "POST"])
 def user_login_route():
@@ -95,18 +126,20 @@ def user_login_route():
     form = userLoginForm()
 
     if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
+        try:
+            username = form.username.data
+            password = form.password.data
 
-        user = User.authenticate(username, password)
+            user = User.authenticate(username, password)
 
-        login_user(user)
+            login_user(user)
+        except AttributeError:
+            flash('Incorrect user name or password, please try again.', 'danger')
+            return render_template('/user/login.html', form=form)
 
         flash(f"Welcome back, {username}!", "success")
         return redirect('/dashboard')
-    else:
-        flash("Invalid password, try again", "danger")
-
+ 
     return render_template('/user/login.html', form=form)
 
 @app.route('/dashboard')
