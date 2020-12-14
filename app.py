@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, State, User, Address, User_Addresses
 from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, editHomeStateForm
 
-from route_helpers import get_state_data, get_multi_state_data, get_formatted_date
+from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
 from extra import my_password, MY_SECRET_KEY
 
 
@@ -117,9 +117,11 @@ def show_home_dashboard():
         flash("Unauthorized access. Please sign up or login", "danger")
         return redirect("/")
 
+    # see route_helpers.py
     data = get_state_data(current_user.homestate)
+    us_deaths = get_us_deaths()
 
-    return render_template('/user/dashboard.html', user=current_user, data=data)
+    return render_template('/user/dashboard.html', user=current_user, data=data, us_deaths=us_deaths)
 
 
 @app.route('/user/edit', methods=["GET", "POST"])

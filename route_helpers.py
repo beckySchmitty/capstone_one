@@ -32,8 +32,22 @@ def get_multi_state_data(user_favorites):
 
         multi_states_data.append(state_data)
          
-
     return multi_states_data
+
+def get_us_deaths():
+    resp = requests.get(f"{BASE_URL}/us/daily.json")
+
+    if resp.status_code != 200:
+        flash('The COVID Tracker API is experiencing an error, please come back later', 'danger')
+        send_myself_err_email("get_state_data status code NOT 200")
+
+    entire_us_data = resp.json()
+
+    entire_us_data[0]["death"] = "{:,}".format((entire_us_data[0]["death"]))
+    us_deaths = entire_us_data[0]["death"]
+
+    return us_deaths
+
 
 #***************************************************************************************** UI HELPERS
 

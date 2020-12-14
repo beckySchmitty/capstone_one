@@ -2,12 +2,16 @@
 /* grey color pallet: #6e7f80 • #536872 • #708090 • #536878 • #36454f
  */
 
-
 /* ********************************** Nav */
 
 .navbar-custom {
     background-color: #451e3e;
     color:white;
+}
+
+.navbar-brand {
+    line-height: 30px;
+
 }
 
 .navbar-brand, .nav-link, .nav-item {
@@ -36,10 +40,6 @@
     border-color: rgb(250, 250, 250);
   } 
 
-
-
-
-/* ********************************** Welcome Buttons */
 
 .btn-custom-1 {
     background-color: #051e3e;
@@ -121,7 +121,6 @@ h6 {
 }
 
 
-
 th {
     color: white;
 }
@@ -133,16 +132,17 @@ table th {
  .table-custom-1 {
     background-color:#051e3e;
     color: white;
+    width: 97%;
 }
 
  #hosp-table {
-     width: 50%;
+     width: 100%;
      background-color: #6e7f80;
      color: white;
  }
 
  #death-table {
-    width: 50%;
+    width: 100%;
     background-color: #36454f;
     color: white;
 
@@ -152,6 +152,11 @@ table th {
     color: #051e3e;
 
  }
+
+ .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
 /* ************************************** Resources*/
 .icon-r {
@@ -189,13 +194,13 @@ table th {
 
 /* ************************************** Footer */
 
+
 .footer {
-    position: absolute;
+    position: sticky;
     bottom: 0;
     width: 100vw;
     height: 60px;
     line-height: 60px; 
-    /* background-color: #051e3e; */
     background-color: #451e3e;
     flex-shrink: 0;
 
@@ -204,7 +209,6 @@ table th {
   .footer a {
       color: white;
   }
-
 
 
 
