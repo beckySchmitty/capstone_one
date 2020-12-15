@@ -187,6 +187,11 @@ table th {
     color: white;
 }
 
+.form-control {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 
 /* ************************************** Footer */
 

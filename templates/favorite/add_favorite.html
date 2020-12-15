@@ -18,15 +18,14 @@
                   {% for error in field.errors %}
                     <span class="text-danger">{{ error }}</span>
                   {% endfor %}
-                  {{field.label}}
                   {% if field.widget.input_type == 'checkbox' %}
                   {{field}}
                   {% else %}
-                  {{ field(class="form-control") }}
+                  {{ field(placeholder=field.label.text, class="form-control") }}
                   {% endif %}
                 {% endfor %}
           
-                <button class="btn btn-success btn-md btn-block">Add</button>
+                <button class="btn btn-success btn-md btn-custom-1">Add</button>
               </form>        </div>
         <div class="col-sm-4"></div>
     </div>
