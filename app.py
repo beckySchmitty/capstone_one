@@ -11,9 +11,7 @@ from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, edi
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
 from extra import my_password, MY_SECRET_KEY
 
-
 app = Flask(__name__)
-
 
 app.config.update(dict(
     DEBUG = True,
@@ -45,6 +43,11 @@ connect_db(app)
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+@login.unauthorized_handler
+def unauthorized():
+    flash("Unauthorized access. Please sign up or login", "danger")
+    return redirect("/")
 
 # ********************************************************************** WELCOME 
 
@@ -90,32 +93,6 @@ def handle_signup():
     return render_template('/user/signup.html', form=form)
 
 
-# @app.route('/login', methods=["GET", "POST"])
-# def user_login_route():
-#     """Checks for user authentication, logs in user"""
-
-#     if current_user.is_authenticated:
-#         return redirect('/dashboard')
-
-#     form = userLoginForm()
-
-#     if form.validate_on_submit():
-#         try:
-#             username = form.username.data
-#             password = form.password.data
-
-#             user = User.authenticate(username, password)
-#         except
-
-#         login_user(user)
-
-#         flash(f"Welcome back, {username}!", "success")
-#         return redirect('/dashboard')
-#     else:
-#         flash("Invalid password, try again", "danger")
-
-#     return render_template('/user/login.html', form=form)
-
 @app.route('/login', methods=["GET", "POST"])
 def user_login_route():
     """Checks for user authentication, logs in user"""
@@ -143,12 +120,9 @@ def user_login_route():
     return render_template('/user/login.html', form=form)
 
 @app.route('/dashboard')
-# @login_required
+@login_required
 def show_home_dashboard():
     """shows main 'Home' page with homestate information"""
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     # see route_helpers.py
     data = get_state_data(current_user.homestate)
@@ -158,12 +132,9 @@ def show_home_dashboard():
 
 
 @app.route('/user/edit', methods=["GET", "POST"])
+@login_required
 def handle_edit_user():
     """Update user email and/or username"""
-
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     form = editUserForm(obj=current_user)
 
@@ -179,11 +150,9 @@ def handle_edit_user():
 
 
 @app.route('/homestate/edit', methods=["GET", "POST"])
+@login_required
 def handle_homestate_edit():
     """Edit homestate address and update user.homestate"""
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     address = Address.query.filter(Address.user_id == current_user.id, Address.nickname == "homestate").one_or_none()
 
@@ -213,12 +182,10 @@ def handle_user_logout():
 # ******************************************************************** FAVORITE ROUTES
 
 @app.route('/favorite/dashboard')
+@login_required
 def show_favorites_dashboard():
     """Render 'Favorites' aka dashboard showing user favorites
     Shows Add Favorite form if none added to account"""
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     favorites = User.get_favs(current_user)
     favorites_for_api = [address for address in favorites if address.state_name != current_user.homestate]
@@ -229,12 +196,9 @@ def show_favorites_dashboard():
 
 
 @app.route('/favorite/add', methods=["GET", "POST"])
+@login_required
 def handle_add_favorite_form():
     """Show add favorite form, handle form, return to dashboard"""
-
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     form = FavoriteForm()
 
@@ -272,12 +236,9 @@ def handle_add_favorite_form():
 
 
 @app.route('/favorite/edit/<nickname>', methods=["GET", "POST"])
+@login_required
 def handle_edit_favorite_form(nickname):
     """Show edit favorite form, handle form, return to dashboard"""
-
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     address = Address.query.filter_by(nickname=f"{nickname}").one()
     form = FavoriteForm(obj=address)
@@ -305,11 +266,9 @@ def handle_edit_favorite_form(nickname):
     return render_template('/favorite/edit.html', form=form, nickname=nickname)
 
 @app.route('/favorite/delete/<nickname>')
+@login_required
 def delete_favorite(nickname):
     """Delete fav & redirect to favorites"""
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
 
     address = Address.query.filter_by(nickname=f"{nickname}").one()
     db.session.delete(address)
@@ -321,15 +280,13 @@ def delete_favorite(nickname):
 # ************************************************************************* Resources
 
 @app.route('/resources')
+@login_required
 def show_resources():
     """shows resource page with email ability"""
-    if not current_user.is_authenticated:
-        flash("Unauthorized access. Please sign up or login", "danger")
-        return redirect("/")
-
     return render_template('resources.html', user=current_user)
 
 @app.route("/email/<user_email>")
+@login_required
 def send_email(user_email):
 
     msg = Message("COVID-19 Resources (myCOVIDNumber)",
@@ -342,21 +299,6 @@ def send_email(user_email):
     mail.send(msg)
     flash(f"Check your inbox, {user_email}", 'success')
     return redirect('/dashboard')
-
-
-# ******************************************************************** Email Func
-
-def send_myself_err_email(error):
-    """Email myself errors. Created in anticipation of API changes or other edge cases"""
-
-    msg = Message("ERROR: Capstone Project",
-                  sender="beckySchmittyDev@gmail.com",
-                  recipients=["becky.schmitthenner@gmail.com"])
-
-    msg.body = f"{error}"
-    msg.html = f"{error}"
-
-    mail.send(msg)
 
 # ******************************************************************** After
 

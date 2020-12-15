@@ -11,7 +11,6 @@ def get_state_data(state):
 
     if resp.status_code != 200:
         flash('The COVID Tracker API is experiencing an error, please come back later', 'danger')
-        send_myself_err_email("get_state_data status code NOT 200")
     
     state_data = resp.json()
 
@@ -39,7 +38,6 @@ def get_us_deaths():
 
     if resp.status_code != 200:
         flash('The COVID Tracker API is experiencing an error, please come back later', 'danger')
-        send_myself_err_email("get_state_data status code NOT 200")
 
     entire_us_data = resp.json()
 
@@ -70,7 +68,6 @@ def get_formatted_date(date):
         date_for_UI = d.isoformat()
     except (ValueError, IndexError):
         date_for_UI = "date not availble"
-        send_myself_err_email("get_formatted_date Error - check API endpoints")
     return date_for_UI
 
 def add_commas(state_data, keys):

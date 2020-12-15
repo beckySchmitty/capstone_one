@@ -12,7 +12,6 @@ def connect_db(app):
 bcrypt = Bcrypt()
 
 
-
 class State(db.Model):
     """State
     
