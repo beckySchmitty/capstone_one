@@ -1,6 +1,4 @@
-"""Other aka remaining views tests."""
-
-#    FLASK_ENV=production python -m unittest test_other_views.py
+"""Remaining views tests."""
 
 import os
 from unittest import TestCase

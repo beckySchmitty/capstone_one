@@ -1,7 +1,5 @@
 """User Model tests."""
 
-#    FLASK_ENV=production python -m unittest test_user_model.py
-
 import os
 from unittest import TestCase
 from sqlalchemy import exc

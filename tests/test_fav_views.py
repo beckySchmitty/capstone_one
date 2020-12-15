@@ -1,7 +1,5 @@
 """Favorite Views tests."""
 
-#    FLASK_ENV=production python -m unittest test_fav_views.py
-
 import os
 from unittest import TestCase
 

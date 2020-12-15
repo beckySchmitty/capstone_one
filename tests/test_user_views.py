@@ -1,7 +1,5 @@
 """User View tests."""
 
-#    FLASK_ENV=production python -m unittest test_user_views.py
-
 import os
 from unittest import TestCase
 
