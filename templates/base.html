@@ -14,6 +14,7 @@
 </head>
 
 <body>
+  <div id="wrap">
 
     <!-- NAV -->
 
@@ -59,17 +60,29 @@
 <!-- JINJA -->
 <div class="container">
   {% block content %}
-  put  content here
+  <!-- put  content here -->
   {% endblock %}
 </div>
 
+
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="container text-center">
+<!-- <footer class="footer">
+  <div class="text-center">
     <p class="text-muted">Data Source <a href="https://covidtracking.com/">The COVID Tracking Project</a> | beckySchmitty <a href="https://github.com/beckySchmitty" target="_blank" rel="noopener noreferrer""><i class="fa fa-github" aria-hidden="true"></i></a>
     </p>
   </div>
-</footer>
+</footer> -->
+
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+  <div class="container">
+    <p class="text-muted">Data Source <a href="https://covidtracking.com/">COVID Tracking Project</a> | beckySchmitty <a href="https://github.com/beckySchmitty" target="_blank" rel="noopener noreferrer""><i class="fa fa-github" aria-hidden="true"></i></a>
+    </p>
+  </div>
+</div>
+
 
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

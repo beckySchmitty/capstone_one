@@ -15,5 +15,4 @@ $(function() {
 
 
 
-  // add pop up for demo 
-  // add notificaiton about when data is updated 
+  $("footer").css("bottom", "0")
