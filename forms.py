@@ -12,7 +12,7 @@ class userSignUpForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     address_line1 = StringField('Address Line 1', validators=[DataRequired()])
     address_line2 = StringField('Address Line 2', validators=[Optional()])
-    state_name = SelectField('State',validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
+    state_name = SelectField('State', validators=[DataRequired()], choices=[(state, state.upper()) for state in states])
     zip_code = FloatField('Zip Code', validators=[DataRequired()])
 
 class userLoginForm(FlaskForm):
