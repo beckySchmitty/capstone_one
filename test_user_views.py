@@ -5,13 +5,16 @@
 import os
 from unittest import TestCase
 
+
 from models import db, connect_db, State, User, Address, User_Addresses
 from bs4 import BeautifulSoup
 
 os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
 
 # import after envir setup
-from app import app, CURR_USER_KEY
+from app import app
+from flask_login import current_user
+
 
 db.create_all()
 
@@ -93,7 +96,7 @@ class UserViewTestCase(TestCase):
         ), follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn(f"Welcome back, {self.username}", str(resp.data))
+            self.assertIn(f"Welcome back, {current_user.username}", str(resp.data))
             self.assertNotEqual("Invalid password, try again", str(resp.data))
 
     def bad_login(self):
@@ -104,14 +107,11 @@ class UserViewTestCase(TestCase):
         ), follow_redirects=True)
 
             self.assertEqual(resp.status_code, 304)
-            self.assertNotEqual(f"Welcome back, {self.username}", str(resp.data))
+            self.assertNotEqual(f"Welcome back, {current_user.username}", str(resp.data))
             self.assertIn("Invalid password, try again", str(resp.data))
 
     def show_dashboard(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
             resp = client.get('/dashboard', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -122,9 +122,6 @@ class UserViewTestCase(TestCase):
 
     def show_user_edit_form(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
             resp = client.get('/user/edit', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -136,10 +133,6 @@ class UserViewTestCase(TestCase):
 
     def handle_user_edit(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
-            user = User.query,get(self.testuser_id)    
 
             resp = client.post('/user/edit', data=dict(
             email="newemail@gmail.com",
@@ -147,12 +140,7 @@ class UserViewTestCase(TestCase):
         ), follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertEqual(user.email, "newemail@gmail.com")
-            self.assertNotEqual(user.email, "firstemail@gmail.com")
+            self.assertEqual(current_user.email, "newemail@gmail.com")
+            self.assertNotEqual(current_user.email, "firstemail@gmail.com")
             self.assertEqual("Account successfully updated", str(resp.data))
             self.assertNotEqual("Invalid", str(resp.data))
-
-
-
-
-

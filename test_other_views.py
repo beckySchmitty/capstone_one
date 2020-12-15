@@ -11,7 +11,9 @@ from bs4 import BeautifulSoup
 os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
 
 # import after envir setup
-from app import app, CURR_USER_KEY
+from app import app
+from flask_login import current_user
+
 
 db.create_all()
 
@@ -70,8 +72,6 @@ class OtherViewTestCase(TestCase):
 
     def show_resources_page(self):
          with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
 
             resp = client.get('/resources', follow_redirects=True)
 
@@ -83,8 +83,6 @@ class OtherViewTestCase(TestCase):
 
     def handle_email_button(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
 
             resp = client.get("/email/BoJackEmail@gmail.com", follow_redirects=True)
 

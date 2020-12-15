@@ -11,7 +11,9 @@ from bs4 import BeautifulSoup
 os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
 
 # import after envir setup
-from app import app, CURR_USER_KEY
+from app import app
+from flask_login import current_user
+
 
 db.create_all()
 
@@ -70,9 +72,6 @@ class FavoriteViewTestCase(TestCase):
 
     def show_fav_dashboard(self):
          with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
             resp = client.get('/favorite/dashboard', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -83,9 +82,6 @@ class FavoriteViewTestCase(TestCase):
 
     def show_edit_fav(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
             resp = client.get("/favorite/edit/Brutus's%20House", follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
@@ -96,9 +92,6 @@ class FavoriteViewTestCase(TestCase):
 
     def handle_edit_fav(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
-
             resp = client.post("/favorite/edit/Brutus's%20House", data=dict(
             address_line1="New Stree Name", 
             state_name="tx", 
@@ -113,8 +106,6 @@ class FavoriteViewTestCase(TestCase):
 
     def delete_fav(self):
         with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser_id
 
             resp = client.get("/favorite/delete/Brutus's%20House", follow_redirects=True)
 

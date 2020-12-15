@@ -1,7 +1,5 @@
 """Address Model tests."""
 
-#    FLASK_ENV=production python -m unittest test_address_model.py
-
 import os
 from unittest import TestCase
 from sqlalchemy import exc
@@ -12,7 +10,10 @@ from bs4 import BeautifulSoup
 
 os.environ['DATABASE_URL'] = "postgresql:///capstone-draft-tests"
 
-from app import app, CURR_USER_KEY
+from app import app
+from flask_login import current_user
+
+
 db.drop_all()
 db.create_all()
 
@@ -38,7 +39,7 @@ class AddressModelTestCase(TestCase):
         db.session.add_all([s1, s2, s3, s4])
         db.session.commit()
 
-        user = User.signUp(
+        self.user = User.signUp(
                 username="testuser",
                 password="password",
                 email="test@test.com",
@@ -47,16 +48,11 @@ class AddressModelTestCase(TestCase):
                 state_name="oh",
                 zip_code="43212"
         )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
-        self.user = User.query.filter_by(username="testuser").one()
-        self.user.id = 111
-        self.user_id = self.user.id
-        db.session.commit()
-
-        self.testaddress = Address(
-                user_id=self.user_id,
+        self.a1 = Address(
+                user_id=self.user.id,
                 address_line1="First Street",
                 address_line2="Apt A",
                 state_name="ny",
@@ -64,8 +60,12 @@ class AddressModelTestCase(TestCase):
                 favorite=True,
                 nickname="Sister's House"
         )
-        self.testaddress_id = 999
-        self.testaddress.id = self.testaddress_id
+
+        db.session.add(self.a1)
+        db.session.commit()
+
+        ua = User_Addresses(user_id=self.user.id, address_id=self.a1.id)
+        db.session.add(ua)
         db.session.commit()
 
         self.client = app.test_client()
@@ -80,21 +80,15 @@ class AddressModelTestCase(TestCase):
     def test_basic_Address_model(self):
         """Does basic model work?"""
 
-        a = Address(
-                user_id=self.user_id,
-                address_line1="Rocket Drive",
-                address_line2="Apt R",
-                state_name="ca",
-                zip_code="88888",
-                favorite=True,
-                nickname="Fred's House"
-        )
+        self.assertIsNotNone(self.a1)
+        self.assertEqual(self.a1.favorite, True)
+        self.assertEqual(self.a1.address_line1, "First Street")
+        self.assertEqual(self.a1.address_line2, "Apt A")
 
-        db.session.add(a)
-        db.session.commit()
 
-        self.assertIsNotNone(a)
-        self.assertEqual(a.favorite, True)
-        self.assertNotEqual(a.address_line1, "Rocket Drive")
+        self.assertIn("First Street", self.user.addresses[1].address_line1)
+        self.assertIn("Apt A", self.user.addresses[1].address_line2)
+        self.assertIn(self.a1, self.user.addresses)
 
-        self.assertIn("Rocket Drive", self.user.addresses[1].address_line1)
+        self.assertIn("123 Line One", self.user.addresses[0].address_line1)
+        self.assertEqual(False, self.user.addresses[0].favorite)
