@@ -9,7 +9,7 @@ from models import db, connect_db, State, User, Address, User_Addresses
 from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, editHomeStateForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
-from extra import my_password, MY_SECRET_KEY
+from extra import my_password
 
 import os
 
