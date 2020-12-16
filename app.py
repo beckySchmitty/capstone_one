@@ -11,6 +11,8 @@ from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, edi
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
 from extra import my_password, MY_SECRET_KEY
 
+import os
+
 app = Flask(__name__)
 
 app.config.update(dict(
@@ -31,7 +33,7 @@ login = LoginManager(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft2'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = MY_SECRET_KEY
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default98218')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['TESTING'] = False
 
