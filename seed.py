@@ -29,7 +29,7 @@ db.session.commit()
 # add Addresses
 a1 = Address(user_id = 1, address_line1="123 Street", state_name="ri", zip_code="77777", favorite=True, nickname="Charlie's House")
 a2 = Address(user_id = 1, address_line1="789 Street", state_name="pa", zip_code="88888", favorite=True, nickname="The Cabin")
-a3 = Address(user_id = 1, address_line1="112 Street", state_name="ny", zip_code="88888", favorite=False, nickname="The Big Apple")
+a3 = Address(user_id = 1, address_line1="112 Street", state_name="ny", zip_code="88888", favorite=True, nickname="The Big Apple")
 db.session.add_all([a1, a2, a3])
 db.session.commit()
 
