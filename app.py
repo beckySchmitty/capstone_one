@@ -9,7 +9,6 @@ from models import db, connect_db, State, User, Address, User_Addresses
 from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, editHomeStateForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
-# from extra import my_password
 
 import os
 
@@ -29,15 +28,13 @@ mail = Mail(app)
 # Flask-Login
 login = LoginManager(app)
 
-# connect to specific database in postgresql
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres:///capstone_draft2')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default98218')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['TESTING'] = False
-
-debug = DebugToolbarExtension(app)
+# debug = DebugToolbarExtension(app)
 
 connect_db(app)
 

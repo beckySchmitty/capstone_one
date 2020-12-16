@@ -5,7 +5,7 @@ from forms import states
 from app import app
 
 
-# Create all tables
+# Drop/create all tables
 db.drop_all()
 db.create_all()
 
@@ -16,21 +16,21 @@ for state in states:
 db.session.commit()
 
 # Add Users
-u1 = User.signUp(username="BoJack_Horseman", password="password", email="fakeemail@gmail.com", 
-address_line1="123 Sunset Ave", address_line2="Apt B", state_name="ca", zip_code="99999")
+u1 = User.signUp(username="GusTheCat", password="ilovef00d!", email="fakeemail@gmail.com", 
+address_line1="123 Sunset Ave", address_line2="Apt A", state_name="oh", zip_code="43212")
 u2 = User.signUp(username="BrutusTheBuckeye", password="password", email="fake2email@gmail.com", 
 address_line1="321 Sunrise Ave", address_line2="Apt B", state_name="oh", zip_code="00000")
-u3 = User.signUp(username="GusTheCat", password="password", email="fake3email@gmail.com", 
-address_line1="888 FeedMe Ave", address_line2="Apt B", state_name="tx", zip_code="77777")
+u3 = User.signUp(username="BoJackHorseman", password="password", email="fake3email@gmail.com", 
+address_line1="888 Netflix Show", address_line2="Apt B", state_name="tx", zip_code="77777")
 
 db.session.commit()
 
 
 # add Addresses
-a1 = Address(user_id = 1, address_line1="123 Street", state_name="ri", zip_code="43015", favorite=True, nickname="Brutus's House")
-a3 = Address(user_id = 1, address_line1="789 Street", state_name="ny", zip_code="88888", favorite=True, nickname="Sister's House")
-a4 = Address(user_id = 1, address_line1="112 Street", state_name="nc", zip_code="88888", favorite=False, nickname="Vacation Home")
-db.session.add_all([a1, a3, a4])
+a1 = Address(user_id = 1, address_line1="123 Street", state_name="ri", zip_code="77777", favorite=True, nickname="Charlie's House")
+a2 = Address(user_id = 1, address_line1="789 Street", state_name="pa", zip_code="88888", favorite=True, nickname="The Cabin")
+a3 = Address(user_id = 1, address_line1="112 Street", state_name="ny", zip_code="88888", favorite=False, nickname="The Big Apple")
+db.session.add_all([a1, a2, a3])
 db.session.commit()
 
 #add user_addresses
