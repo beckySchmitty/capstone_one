@@ -9,7 +9,7 @@ from models import db, connect_db, State, User, Address, User_Addresses
 from forms import userLoginForm, userSignUpForm, FavoriteForm, editUserForm, editHomeStateForm
 
 from route_helpers import get_state_data, get_multi_state_data, get_formatted_date, get_us_deaths
-from extra import my_password
+# from extra import my_password
 
 import os
 
@@ -22,7 +22,7 @@ app.config.update(dict(
     MAIL_USE_TLS = True,
     MAIL_USE_SSL = False,
     MAIL_USERNAME = 'beckySchmittyDev@gmail.com',
-    MAIL_PASSWORD = my_password
+    MAIL_PASSWORD = os.environ['MY_ENV_EMAIL_KEY']
 ))
 # Flask-Mail
 mail = Mail(app)
