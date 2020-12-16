@@ -77,7 +77,7 @@ def handle_signup():
                 email = form.email.data,
                 address_line1 = form.address_line1.data,
                 address_line2 = form.address_line2.data,
-                state_name = form.state_name,
+                state_name = form.state_name.data,
                 zip_code = form.zip_code.data
             )
             db.session.commit()
