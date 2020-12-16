@@ -30,7 +30,7 @@ mail = Mail(app)
 login = LoginManager(app)
 
 # connect to specific database in postgresql
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///capstone_draft2'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres:///capstone_draft2')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default98218')
