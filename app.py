@@ -86,7 +86,7 @@ def handle_signup():
             flash('Please try again', 'danger')
             return render_template('/user/signup.html', form=form)
 
-        login_user(user)
+        login_user(new_user)
         return redirect('/dashboard')
 
     return render_template('/user/signup.html', form=form)
